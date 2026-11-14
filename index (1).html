@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>YUMI</title>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--side:#0a0a0a;--surf:#141414;--hi:#202020;--line:#292929;--text:#f5f5f5;--mut:#999;--dim:#666;--ac:#f5f5f5;--onac:#000;--r1:10px;--r2:14px;--r3:20px;--r4:24px;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"]{--bg:#fff;--side:#fafafa;--surf:#fff;--hi:#f2f2f2;--line:#e5e5e5;--text:#111;--mut:#777;--dim:#aaa;--ac:#111;--onac:#fff;color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font:400 16px/1.55 "Onest",system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0;text-align:left}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.shell{display:flex;height:100%}
+.side{position:fixed;z-index:30;top:0;bottom:0;left:0;width:288px;max-width:84%;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:calc(10px + env(safe-area-inset-top,0px)) 10px calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-102%);transition:transform .22s ease}
+.side.open{transform:none}
+.sh{display:flex;align-items:center;gap:8px;padding:4px 6px 12px;font-weight:600;font-size:18px}
+.logo{width:28px;height:28px;color:var(--ac)}
+.row2{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;width:100%;font-size:15px}
+.row2:hover,.row2:active{background:var(--hi)}
+.new{background:var(--surf);border:1px solid var(--line);margin-bottom:6px}
+.lab{font-size:13px;color:var(--mut);padding:14px 10px 6px}
+.list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.it{display:flex;align-items:center;border-radius:12px}
+.it.on{background:var(--hi)}
+.it .t{flex:1;padding:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}
+.it .d{width:36px;height:36px;display:grid;place-items:center;color:var(--mut);border-radius:10px}
+.it .d:hover{color:var(--text)}
+.scrim{position:fixed;inset:0;z-index:25;background:rgba(6,5,12,.55);opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.show{opacity:1;pointer-events:auto}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;height:100%}
+.top{display:flex;align-items:center;gap:4px;padding:8px 10px}
+.ib{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;color:var(--mut);flex:none}
+.ib:hover,.ib:active{background:var(--hi);color:var(--text)}
+.mp{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;font-weight:500;font-size:17px}
+.mp:hover,.mp:active{background:var(--hi)}
+.mp .i{width:16px;height:16px;color:var(--mut)}
+.sp{flex:1}
+.feed{flex:1;overflow-y:auto;padding:8px 16px 16px}
+.col{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.hero{max-width:720px;margin:0 auto;padding-top:18vh;text-align:center}
+.hero .logo{width:44px;height:44px;margin-bottom:14px}
+.hero h1{font-size:28px;font-weight:600;margin:0 0 6px}
+.hero p{margin:0;color:var(--mut);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px}
+.chips button{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);font-size:14.5px;background:var(--surf)}
+.chips button:active{border-color:var(--ac)}
+.chips .i{width:18px;height:18px;color:var(--ac)}
+.me{align-self:flex-end;max-width:85%;background:var(--hi);padding:10px 15px;border-radius:20px 20px 6px 20px;white-space:pre-wrap;word-wrap:break-word}
+.ai{display:flex;gap:12px;align-items:flex-start}
+.av{width:30px;height:30px;border-radius:50%;background:var(--surf);border:1px solid var(--line);display:grid;place-items:center;color:var(--ac);flex:none}
+.av .logo{width:20px;height:20px}
+.bd{min-width:0;flex:1;white-space:pre-wrap;word-wrap:break-word;padding-top:2px}
+.meta{display:flex;align-items:center;gap:6px;color:var(--mut);font-size:13px;margin-top:8px}
+.meta button{display:flex;align-items:center;gap:4px;padding:4px 6px;border-radius:8px}
+.meta button:hover{background:var(--hi)}
+.meta .i{width:15px;height:15px}
+pre{background:var(--surf);border:1px solid var(--line);border-radius:14px;margin:10px 0 0;overflow-x:auto;font:13.5px/1.6 ui-monospace,Menlo,Consolas,monospace;padding:12px 14px;white-space:pre}
+.ntc{align-self:center;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--mut);background:var(--surf);border:1px solid var(--line);padding:7px 13px;border-radius:999px;text-align:center}
+.ntc .i{width:16px;height:16px;color:var(--ac)}
+.att{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;justify-content:flex-end}
+.att img{width:84px;height:84px;object-fit:cover;border-radius:12px}
+.fc{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:var(--surf);border:1px solid var(--line);font-size:14px;max-width:200px}
+.fc span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dotsT{display:flex;gap:5px;padding:12px 0}
+.dotsT b{width:7px;height:7px;border-radius:50%;background:var(--mut);animation:b 1s infinite}
+.dotsT b:nth-child(2){animation-delay:.15s}.dotsT b:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,60%,100%{opacity:.3}30%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.dotsT b{animation:none}}
+.comp{padding:6px 12px 12px}
+.cbox{max-width:720px;margin:0 auto;background:var(--surf);border:1px solid var(--line);border-radius:26px;padding:6px}
+.cbox:focus-within{border-color:var(--ac)}
+.pend{display:flex;flex-wrap:wrap;gap:8px;padding:6px 6px 2px}
+.pend .fc{position:relative;padding-right:30px}
+.pend .fc button{position:absolute;right:6px;top:50%;transform:translateY(-50%);color:var(--mut);display:grid}
+.pend img{width:56px;height:56px;border-radius:10px;object-fit:cover}
+.crow{display:flex;align-items:flex-end;gap:2px}
+textarea{flex:1;resize:none;border:0;outline:0;background:none;color:var(--text);font:inherit;font-size:16px;padding:10px 6px;min-height:42px;max-height:150px}
+textarea::placeholder{color:var(--mut)}
+.send{background:var(--ac);color:var(--onac);border-radius:50%}
+.send:hover,.send:active{background:var(--ac);color:var(--onac);filter:brightness(1.08)}
+.sheet{position:fixed;z-index:40;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--surf);border:1px solid var(--line);border-bottom:0;border-radius:24px 24px 0 0;padding:18px 14px calc(16px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .24s ease;max-height:88%;overflow-y:auto}
+.sheet.open{transform:none}
+.sheet h2{font-size:18px;margin:0 6px 10px;font-weight:600}
+.sheet h3{font-size:14px;font-weight:500;color:var(--mut);margin:16px 6px 8px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;padding:12px 10px;border-radius:14px}
+.opt:hover,.opt:active{background:var(--hi)}
+.opt .tx{flex:1;min-width:0}
+.opt small{display:block;color:var(--mut);font-size:13.5px;line-height:1.3}
+.opt .ck{color:var(--ac);width:20px}
+.opt.dis{opacity:.5}
+.tg{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:14px;background:var(--hi);margin-bottom:8px;width:100%}
+.sw{width:44px;height:26px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s}
+.tg[aria-checked="true"] .sw{background:var(--ac)}
+.tg[aria-checked="true"] .sw::after{transform:translateX(18px)}
+.seg{display:flex;background:var(--hi);border-radius:14px;padding:3px;margin:0 4px}
+.seg button{flex:1;display:flex;justify-content:center;align-items:center;gap:8px;padding:9px;border-radius:11px;color:var(--mut);font-size:15px}
+.seg button.on{background:var(--surf);color:var(--text);box-shadow:0 0 0 1px var(--line)}
+.cols{display:flex;gap:14px;padding:2px 6px}
+.cols button{width:38px;height:38px;border-radius:50%;outline:2px solid transparent;outline-offset:2px}
+.cols button.on{outline-color:var(--text)}
+.toast{position:fixed;z-index:60;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 16px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
+.toast.show{opacity:1}
+.usum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.sc{background:var(--hi);border-radius:14px;padding:10px 6px;text-align:center}
+.sc b{display:block;font-size:18px;font-weight:600}
+.sc small{display:block;color:var(--mut);font-size:12px;line-height:1.25}
+.ur{padding:9px 6px}
+.uh{display:flex;justify-content:space-between;gap:8px;font-size:15px}
+.uh span{color:var(--mut);font-size:13px}
+.bar2{height:6px;border-radius:9px;background:var(--hi);margin:7px 0 5px;overflow:hidden}
+.bar2 i{display:block;height:100%;background:var(--ac);border-radius:9px}
+.uf{display:flex;justify-content:space-between;gap:8px;color:var(--mut);font-size:12.5px}
+.note{color:var(--mut);font-size:13px;margin:10px 6px 0}
+@media (min-width:900px){.side{position:static;transform:none;max-width:none;flex:none}.mbtn,.scrim{display:none}}
+.mod{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.mod.show{display:flex}
+.mbox{width:100%;max-width:420px}
+.mbox .logo{width:44px;height:44px;margin-bottom:12px}
+.mbox h2{font-size:24px;margin:0 0 6px;font-weight:600}
+.mbox p{color:var(--mut);margin:0 0 18px;font-size:15px}
+.mbox label{display:flex;justify-content:space-between;font-size:14px;margin:14px 2px 6px}
+.mbox label a{color:var(--ac);text-decoration:none}
+.mbox input{width:100%;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:13px 14px;color:var(--text);font:inherit;font-size:16px;outline:0}
+.mbox input:focus{border-color:var(--ac)}
+.mbox .hint{color:var(--ac);font-size:14px;min-height:22px;margin:10px 2px 0}
+.go{width:100%;margin-top:6px;background:var(--ac);color:var(--onac);border-radius:14px;padding:14px;text-align:center;font-weight:600}
+.lnk{width:100%;text-align:center;color:var(--mut);padding:12px;font-size:14.5px}
+.art{position:fixed;inset:0;z-index:55;background:var(--bg);display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.art.show{display:flex}
+.at{display:flex;align-items:center;gap:8px;padding:6px 10px;font-weight:600}
+.art iframe{flex:1;border:0;background:#fff;width:100%}
+.acts{display:flex;gap:8px;margin:6px 0 4px}
+.acts button{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surf);font-size:14px}
+.acts button:active{border-color:var(--ac)}
+.nav{display:flex;border-top:1px solid var(--line);background:var(--side)}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;font-size:12px;color:var(--mut);text-align:center}
+.nav button.on{color:var(--ac)}
+.view{display:none;flex:1;min-height:0;flex-direction:column;overflow-y:auto;padding:8px 16px 16px}
+.ph{display:flex;align-items:center;gap:8px}.ph h2{flex:1;margin:0;font-size:22px;font-weight:600}
+.go2{background:var(--ac);color:var(--onac);padding:8px 14px;border-radius:12px;font-weight:500;text-align:center}
+.pc{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border-radius:14px;background:var(--surf);border:1px solid var(--line);margin-top:10px}
+.pc .pi{font-size:26px}.pc small{display:block;color:var(--mut)}.emp{color:var(--mut);text-align:center;margin-top:30px}
+.pins{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:12px;margin:12px 0;white-space:pre-wrap;color:var(--mut);font-size:14.5px}
+body{font-size:var(--fs,16px)}
+.bd{white-space:normal}.bd p{margin:0 0 8px}.bd h1,.bd h2,.bd h3{margin:12px 0 6px;font-weight:600;line-height:1.3}.bd h1{font-size:1.3em}.bd h2{font-size:1.15em}.bd h3{font-size:1.02em}
+.bd ul,.bd ol{margin:4px 0 8px;padding-left:22px}.bd code{background:var(--hi);padding:1px 6px;border-radius:6px;font:.86em ui-monospace,Menlo,Consolas,monospace}.bd pre code{background:none;padding:0}
+textarea{max-height:170px}
+.srch{width:100%;background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--text);font:inherit;font-size:15px;outline:0;margin:4px 0}
+.srch:focus{border-color:var(--ac)}textarea.srch{resize:vertical}
+#fsz button{font-size:12.5px;padding:9px 2px}
+.pc .d{width:36px;height:36px}
+.mr{border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:6px}
+.mr .acts button{padding:5px 11px;font-size:13px}.mr .acts button.on{border-color:var(--ac);color:var(--ac)}
+.sw2{display:flex;gap:10px;padding:2px 6px}.sw2 button{width:36px;height:36px;border-radius:50%;outline:2px solid transparent;outline-offset:2px}.sw2 button.on{outline-color:var(--text)}
+.art{z-index:57}
+.ed{position:fixed;inset:0;z-index:56;background:var(--bg);display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}.ed.show{display:flex}
+.edw{flex:1;display:flex;min-height:0}
+.gut{width:46px;flex:none;overflow:hidden;background:var(--side);color:var(--mut);text-align:right;padding:10px 6px 10px 0;font:13px/20px ui-monospace,Menlo,Consolas,monospace;white-space:pre;border-right:1px solid var(--line);user-select:none}
+#edT{flex:1;min-width:0;white-space:pre;overflow:auto;font:13px/20px ui-monospace,Menlo,Consolas,monospace;padding:10px;tab-size:2;border:0;background:var(--bg);resize:none;max-height:none;min-height:0;color:var(--text);outline:0}
+.fb{display:none;gap:6px;padding:6px 8px;flex-wrap:wrap;border-bottom:1px solid var(--line);background:var(--side)}.fb.show{display:flex}.fb input{flex:1;min-width:90px;margin:0}
+.cons{display:none;max-height:28%;overflow:auto;background:var(--surf);color:var(--text);border-top:1px solid var(--line);font:12.5px/1.5 ui-monospace,monospace;padding:8px 12px;white-space:pre-wrap}.cons.show{display:block}
+.chg,.cc{margin:10px 0 4px;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.chg small,.cc small{display:block;color:var(--mut)}
+.dl2{font:12.5px/1.5 ui-monospace,monospace;white-space:pre-wrap;word-break:break-all;padding:0 6px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+.ac2{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:6px}.ac2 .big{font-size:34px}.ac2 small{color:var(--mut)}
+#stat{display:none;align-items:center;gap:8px;max-width:720px;margin:0 auto 6px;padding:8px 12px;border:1px solid var(--line);border-radius:14px;background:var(--surf);font-size:13.5px}
+
+/* ===== YUMI design system: monochrome, tokens only ===== */
+body{letter-spacing:-.005em}
+:focus-visible{outline:2px solid var(--text)!important;outline-offset:2px}
+.logo,.av{display:none!important}
+button{transition:background .15s,color .15s,border-color .15s,transform .1s}
+button:active{transform:scale(.97)}
+.main{background:var(--bg)}
+/* surfaces */
+.cbox,.sheet,.pc,.cc,.chg,.ac2,.srch,.mbox input,.fc,.ntc,#stat,pre{background:var(--surf);border:1px solid var(--line);box-shadow:none}
+.sheet{border-radius:var(--r4) var(--r4) 0 0}
+.row2,.opt,.tg,.pc,.cc,.chg,.ac2,.srch,.mbox input{border-radius:var(--r2)}
+.side{background:var(--side);border-right:1px solid var(--line)}
+.sh{font-weight:700;letter-spacing:.02em}
+.new{background:var(--surf);border:1px solid var(--line)}
+.it.on,.row2:hover,.row2:active,.opt:hover,.opt:active{background:var(--hi)}
+.scrim{background:rgba(0,0,0,.55)}
+/* top bar */
+.top{position:relative;padding:8px 12px;gap:8px}
+.top .sp{display:none}
+.top .ib{width:44px;height:44px;border-radius:var(--r2);background:var(--surf);border:1px solid var(--line);color:var(--text)}
+.top #newTop{margin-left:auto}
+.mp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:44%;font-weight:600;font-size:17px}
+.mp #mpName{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp:active{transform:translate(-50%,-50%) scale(.97)}
+/* hero */
+.hero{padding-top:20vh}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0 0 4px}
+.hero p{font-size:20px;color:var(--mut);margin:0}
+.chips{margin-top:26px;gap:8px}
+.chips button{background:var(--surf);border:1px solid var(--line);color:var(--text);padding:10px 15px;font-size:14px;border-radius:999px}
+.chips .i,.ntc .i{color:var(--mut)}
+.chips button:active{background:var(--hi)}
+/* messages */
+.me{background:var(--hi);border:0;border-radius:var(--r3) var(--r3) 6px var(--r3)}
+.ai .bd{padding-top:0}
+.col>*{animation:in .18s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(4px)}}
+pre{border-radius:var(--r2)}
+.bd code{background:var(--hi)}
+.acts button,.meta button{color:var(--mut)}
+.acts button{border-radius:999px;background:var(--surf);border:1px solid var(--line)}
+/* composer */
+.comp{padding:4px 12px 10px}
+.mrow{max-width:720px;margin:0 auto 6px;display:flex}
+.mrow #modeB{height:28px;padding:0 12px;font-size:12.5px;color:var(--mut);background:var(--surf);border:1px solid var(--line);border-radius:999px}
+.cbox{border-radius:26px;padding:6px}
+.cbox:focus-within{border-color:var(--dim)}
+.crow{align-items:center}
+.crow #plus{order:1}.crow textarea{order:2}.crow #mic{order:3}.crow #send{order:4}
+.crow .ib{width:42px;height:42px;border-radius:50%;color:var(--text)}
+.crow .ib:hover,.crow .ib:active{background:var(--hi)}
+.send{width:42px!important;height:42px!important;background:var(--ac)!important;color:var(--onac)!important}
+.send:hover,.send:active{filter:none;opacity:.85}
+/* nav */
+.nav{background:var(--bg);border-top:1px solid var(--line)}
+.nav button{position:relative;padding:8px 0 8px;font-size:12px;gap:3px;color:var(--dim)}
+.nav button.on{color:var(--text)}
+.nav button.on::after{content:"";position:absolute;left:30%;right:30%;top:0;height:2px;border-radius:2px;background:var(--text)}
+/* controls */
+.seg{background:var(--hi);border:0;border-radius:var(--r2)}
+.seg button.on{background:var(--surf);color:var(--text);box-shadow:0 0 0 1px var(--line)}
+.tg{background:var(--hi)}
+.sw{background:var(--dim)}
+.tg[aria-checked="true"] .sw{background:var(--ac)}
+.tg[aria-checked="true"] .sw::after{background:var(--onac)}
+h3:has(+#cols),#cols{display:none}
+.opt .ck,.mbox label a,.mbox .hint{color:var(--text)}
+.bar2{background:var(--hi)}.bar2 i{background:var(--text)}
+.go,.go2{background:var(--ac);color:var(--onac);border-radius:var(--r2);font-weight:600}
+.sc{background:var(--hi);border-radius:var(--r2)}
+.mr .acts button.on{border-color:var(--text);color:var(--text)}
+.pc .pi{color:var(--text)}
+.toast{background:var(--text);color:var(--bg)}
+.edw,.gut,.fb,.ed,.art{background:var(--bg)}
+.gut,.fb{background:var(--side)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== v3: models + projects ===== */
+.opt{align-items:flex-start}
+.opt .ck{padding-top:2px}
+.opt b{display:block;font-weight:600;font-size:15.5px}
+.opt .chip{display:inline-block;margin-top:6px;padding:2px 9px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--mut)}
+.opt.dis{opacity:1}.opt.dis b,.opt.dis small{color:var(--dim)}
+#modelSheet h3{margin-top:14px}
+.pc{align-items:center;padding:12px}
+.pc .tx{overflow:hidden}.pc .tx b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.pc .tx small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc .pdesc{color:var(--text);opacity:.7;margin:1px 0 3px}
+.ph{padding:4px 0 8px}.ph h2{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lab{font-weight:600;color:var(--text);padding-top:20px}
+.pins{border-radius:var(--r2);color:var(--mut);background:var(--surf)}
+.view>.go2{padding:13px;border-radius:var(--r2)}
+.view .row2{border:1px dashed var(--line);justify-content:center;margin-top:8px;color:var(--mut)}
+
+/* ===== v4: settings + artifacts ===== */
+.sg{margin:0 0 18px}
+.sg h3{font-size:16px;font-weight:700;color:var(--text);margin:14px 6px 2px}
+.sd{margin:0 6px 10px;color:var(--mut);font-size:13.5px}
+.sl{display:block;margin:12px 6px 6px;color:var(--mut);font-size:13.5px}
+.sg .opt{padding:12px 10px;margin-bottom:2px;border:1px solid var(--line);margin-bottom:6px}
+.sg .opt .tx b{display:block;font-weight:600}
+.sg .opt.danger{border-color:var(--dim)}
+.sheet .sg:last-of-type{margin-bottom:6px}
+.gal{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.ac2{padding:10px;gap:4px;border-radius:var(--r3)}
+.ac2 b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:6px}
+.ac2 small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv{height:120px;border-radius:var(--r2);background:var(--hi);border:1px solid var(--line);overflow:hidden;position:relative;display:grid;place-items:center;color:var(--dim)}
+.pv .i{width:32px;height:32px}
+.pv iframe{position:absolute;left:0;top:0;width:400%;height:400%;border:0;background:#fff;transform:scale(.25);transform-origin:0 0;pointer-events:none}
+.ac2 .acts{margin-top:6px}.ac2 .acts button:first-child{flex:1;justify-content:center}
+.ac2 .acts .d{width:36px;height:34px;padding:0;justify-content:center}
+
+/* ===== v5: code tab, editor, plus menu ===== */
+.go2{display:inline-flex;align-items:center;gap:6px}
+.go2 .i{width:18px;height:18px;stroke-width:2}
+.at{gap:2px;padding:6px 8px;border-bottom:1px solid var(--line);background:var(--bg)}
+.at .ib{width:42px;height:42px;border-radius:var(--r2);color:var(--text)}
+.at .ib .i{width:21px;height:21px}
+.at #edN{font-weight:600;font-size:15px;padding:0 6px}
+.view .pc>.i:first-child{width:22px;height:22px;color:var(--mut)}
+.view>.row2{color:var(--mut)}
+select.srch{appearance:none;-webkit-appearance:none;background:var(--surf);min-height:44px}
+#edT,.gut{font-size:13.5px}
+#plusSheet .opt{align-items:center}
+
+/* ===== v6: unified sizes ===== */
+:root{--fs-s:13px;--fs-m:15px;--fs-l:17px;--ctl:44px}
+.i{width:20px;height:20px;stroke-width:1.75}
+.ib{width:var(--ctl);height:var(--ctl)}
+.row2,.opt{font-size:var(--fs-m);min-height:48px}
+.opt small,.pc small,.uf,.note,.sd,.sc small,.opt .chip{font-size:var(--fs-s)}
+.opt .chip{font-size:12px}
+.lab{font-size:14px;font-weight:600;color:var(--text)}
+.sheet h2{font-size:var(--fs-l)}
+.sheet h3{font-size:14px;font-weight:600;color:var(--text)}
+.sg h3{font-size:var(--fs-m)}
+.ph h2{font-size:22px}
+.go,.go2{min-height:var(--ctl);font-size:var(--fs-m);padding:0 18px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.go{width:100%}
+.go.sec{background:var(--hi);color:var(--text)}
+.frow{display:flex;gap:10px;margin-top:16px}.frow .go{flex:1;width:auto;margin:0}
+.acts button,.mr .acts button,.meta button,.view .acts button{height:36px;min-height:36px;padding:0 14px;font-size:13.5px;gap:6px;display:inline-flex;align-items:center}
+.acts button .i,.meta button .i{width:16px;height:16px}
+.chips button{height:40px;padding:0 16px;font-size:14px}
+.chips .i{width:18px;height:18px}
+.mrow #modeB{height:32px;font-size:13px}
+.srch,.mbox input,textarea{font-size:16px}
+.srch{min-height:46px}
+textarea.srch{min-height:84px}
+.nav button{font-size:12px}.nav button .i{width:24px;height:24px}
+.it .t{font-size:var(--fs-m)}
+.it .t .i{width:14px;height:14px;margin-right:6px;vertical-align:-2px;color:var(--mut)}
+.pc .pi{width:44px;height:44px;font-size:22px;color:var(--mut)}
+.pc .pi .i{width:22px;height:22px}
+.pc .d,.it .d{width:40px;height:40px}
+.ur{background:var(--surf);border:1px solid var(--line);border-radius:var(--r2);padding:12px;margin-bottom:8px}
+.uh b{font-weight:600;font-size:var(--fs-m)}
+.sc b{font-size:20px}
+.usum{gap:8px}.sc{padding:12px 6px}
+#fsz button,.seg button{font-size:14px;min-height:40px}
+.ntc,#stat{font-size:var(--fs-s)}
+
+/* ===== v7: remaining spec items ===== */
+.crow #mic.rec{background:var(--ac);color:var(--onac);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.6}}
+.cc{border-radius:var(--r2);padding:12px}
+.cc b{font-weight:600;font-size:var(--fs-m)}
+.view{animation:in .18s ease-out}
+body,.main,.side,.sheet,.cbox,.pc,.nav,.top .ib,.opt,.srch,.ac2,.cc,.me{transition:background-color .2s,color .2s,border-color .2s}
+.meta{gap:2px}
+.meta button{width:36px;justify-content:center;padding:0}
+.sheet.open{animation:none}
+
+/* ===== v8 ===== */
+.pc .pi{width:44px;height:44px;border-radius:12px;background:var(--hi);color:var(--text);display:grid;place-items:center}
+.pc .pi .i{width:24px;height:24px;color:var(--text)}
+.row2.soon{color:var(--mut)}
+.row2.soon::after{content:"Скоро";margin-left:auto;font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.opt.danger b,.opt.danger .i{color:var(--text)}
+.opt.danger{border-color:var(--dim)}
+textarea:focus-visible{outline:none!important}
+.mp{max-width:40%}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16L5.5 6.5l20 3z"/><path d="M16 16l10.5 9.5-20-3z"/></symbol>
+<symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2.6-1.5L14 2.5h-4l-.4 2.5a7.6 7.6 0 0 0-2.6 1.5l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 3l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 2.6 1.5l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 2.6-1.5l2.4 1 2-3.4z"/></symbol><symbol id="undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3"/></symbol><symbol id="redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 0 0 0 12h3"/></symbol><symbol id="find" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></symbol><symbol id="hist" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2"/></symbol><symbol id="play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol><symbol id="stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol><symbol id="back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol><symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="edit" viewBox="0 0 24 24"><path d="M21.2 6.8a1 1 0 0 0-4-4L3.8 16.2a2 2 0 0 0-.5.8l-1.3 4.4a.5.5 0 0 0 .6.6l4.4-1.3a2 2 0 0 0 .8-.5zM15 5l4 4"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+<symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/></symbol>
+<symbol id="cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.2"/></symbol>
+<symbol id="file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zM14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/></symbol>
+<symbol id="code" viewBox="0 0 24 24"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></symbol>
+<symbol id="puz" viewBox="0 0 24 24"><path d="M15.4 4.4a1 1 0 0 0 1.7-.5 2.5 2.5 0 1 1 3 3 1 1 0 0 0-.5 1.7l1.7 1.7a2.4 2.4 0 0 1 0 3.4l-2.7 2.7a1 1 0 0 1-1.7-.5 2.5 2.5 0 1 0-3 3 1 1 0 0 1 .5 1.7l-1.7 1.7a2.4 2.4 0 0 1-3.4 0L8.6 19.6a1 1 0 0 0-1.7.5 2.5 2.5 0 1 1-3-3 1 1 0 0 0 .5-1.7l-1.7-1.7a2.4 2.4 0 0 1 0-3.4l2.7-2.7a1 1 0 0 1 1.7.5 2.5 2.5 0 1 0 3-3 1 1 0 0 1-.5-1.7l1.7-1.7a2.4 2.4 0 0 1 3.4 0z"/></symbol>
+<symbol id="fold" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+<symbol id="set" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+<symbol id="del" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></symbol>
+<symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+<symbol id="cp" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+<symbol id="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+<symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></symbol>
+<symbol id="bolt" viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></symbol>
+<symbol id="gauge" viewBox="0 0 24 24"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/></symbol>
+<symbol id="dots" viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="18.5" r="1.4" fill="currentColor"/></symbol>
+<symbol id="vol" viewBox="0 0 24 24"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5zM16 9a5 5 0 0 1 0 6M19.4 18.4a9 9 0 0 0 0-12.8"/></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="ref" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8M21 3v5h-5M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16M8 16H3v5"/></symbol>
+<symbol id="shr" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol>
+<symbol id="home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7M6 10v10h12V10"/></symbol>
+<symbol id="arch" viewBox="0 0 24 24"><path d="M4 6h16v4H4zM6 10v9h12v-9M10 14h4"/></symbol>
+</svg>
+
+<div class="shell">
+<aside class="side" id="side">
+  <div class="sh"><svg class="logo"><use href="#logo"/></svg>YUMI</div>
+  <button class="row2 new" id="newBtn"><svg class="i"><use href="#edit"/></svg>Новий чат</button>
+  <button class="row2 soon" data-soon="Скіли додамо на наступному кроці"><svg class="i"><use href="#puz"/></svg>Скіли</button>
+  <button class="row2 soon" data-soon="Файли додамо на наступному кроці"><svg class="i"><use href="#fold"/></svg>Файли</button>
+  <button class="row2" id="openUse"><svg class="i"><use href="#gauge"/></svg>Токени та ліміти</button>
+  <div class="lab">Чати</div>
+  <input class="srch" id="cq" placeholder="Пошук по чатах" style="margin:0 0 6px">
+  <div class="list" id="list"></div>
+  <button class="row2" id="openSet"><svg class="i"><use href="#gear"/></svg>Налаштування</button>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<section class="main">
+  <div class="top">
+    <button class="ib mbtn" id="menuBtn" aria-label="Відкрити чати"><svg class="i"><use href="#menu"/></svg></button>
+    <button class="mp" id="mp"><span id="mpName">Gemini</span><svg class="i"><use href="#chev"/></svg></button>
+    <div class="sp"></div>
+    <button class="ib" id="newTop" aria-label="Новий чат"><svg class="i"><use href="#edit"/></svg></button>
+    <button class="ib" id="moreTop" aria-label="Меню чату"><svg class="i"><use href="#dots"/></svg></button>
+  </div>
+  <div class="feed" id="feed"><div class="col" id="col"></div></div>
+  <div class="comp">
+    <div id="stat"><span id="statT" style="flex:1"></span><button class="go2" id="statX">Стоп</button></div>
+    <div class="mrow"><button class="ib" id="modeB"  aria-label="Режим коду">Авто</button></div>
+    <div class="cbox">
+      <div class="pend" id="pend"></div>
+      <div class="crow">
+        <button class="ib" id="plus" aria-label="Додати"><svg class="i"><use href="#i-plus"/></svg></button>
+        <textarea id="inp" rows="1" placeholder="Напишіть повідомлення"></textarea>
+        <button class="ib" id="mic" aria-label="Голос"><svg class="i"><use href="#i-mic"/></svg></button>
+        <button class="ib send" id="send" aria-label="Надіслати"><svg class="i"><use href="#i-send"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="view" id="vProj"></div><div class="view" id="vCode"></div><div class="view" id="vArt"></div>
+  <nav class="nav" id="nav">
+    <button data-t="chat" class="on"><svg class="i"><use href="#chat"/></svg>Чат</button>
+    <button data-t="proj"><svg class="i"><use href="#fold"/></svg>Проєкти</button>
+    <button data-t="code"><svg class="i"><use href="#code"/></svg>Код</button>
+    <button data-t="art"><svg class="i"><use href="#puz"/></svg>Артефакти</button>
+  </nav>
+</section>
+</div>
+
+<input type="file" id="fPhoto" accept="image/*" multiple hidden>
+<input type="file" id="fCam" accept="image/*" capture="environment" hidden>
+<input type="file" id="fFile" multiple hidden>
+<input type="file" id="fPF" multiple hidden>
+<input type="file" id="fImp" multiple hidden>
+
+<div class="sheet" id="dynSheet"></div>
+<div class="sheet" id="plusSheet">
+  <button class="opt" data-a="photo"><svg class="i"><use href="#img"/></svg><span class="tx">Фото з галереї</span></button>
+  <button class="opt" data-a="cam"><svg class="i"><use href="#cam"/></svg><span class="tx">Зробити фото</span></button>
+  <button class="opt" data-a="file"><svg class="i"><use href="#file"/></svg><span class="tx">Файл</span></button>
+  <button class="opt" data-a="gen"><svg class="i"><use href="#img"/></svg><span class="tx">Створити зображення<small>Модель, яка вміє малювати, підключиться сама</small></span></button>
+</div>
+
+<div class="sheet" id="modelSheet">
+  <h2>Модель</h2>
+  <button class="tg" id="autoTg" role="switch" aria-checked="true"><span class="tx" style="flex:1">Авто: перемикати автоматично<small style="display:block;color:var(--mut);font-size:13.5px;line-height:1.3">Коли ліміт закінчується, чат продовжить наступна модель</small></span><span class="sw"></span></button>
+  <div id="mlist"></div>
+</div>
+
+<div class="sheet" id="setSheet">
+  <h2>Налаштування</h2>
+  <div class="cols" id="cols"></div>
+  <section class="sg"><h3>Зовнішній вигляд</h3><p class="sd">Тема й розмір тексту</p>
+    <div class="seg" id="theme"><button data-t="dark"><svg class="i"><use href="#moon"/></svg>Темна</button><button data-t="light"><svg class="i"><use href="#sun"/></svg>Світла</button></div>
+    <div class="seg" id="fsz" style="margin-top:8px"><button data-f="14">Дрібний</button><button data-f="16">Звичайний</button><button data-f="18">Великий</button><button data-f="20">Дуже великий</button></div></section>
+  <section class="sg"><h3>Моделі та API</h3><p class="sd">Ключі провайдерів і порядок моделей</p>
+    <button class="opt" id="keysBtn"><svg class="i"><use href="#gauge"/></svg><span class="tx"><b>Ключі Gemini та Groq</b><small>Змінити або видалити</small></span></button>
+    <button class="opt" id="modBtn"><svg class="i"><use href="#bolt"/></svg><span class="tx"><b>Моделі та порядок</b><small>Вибір, порядок, вимкнення, тег «код»</small></span></button></section>
+  <section class="sg"><h3>Голос</h3><p class="sd">Озвучення відповідей</p>
+    <select id="vSel" class="srch"></select>
+    <input type="range" id="vRate" min="0.6" max="1.6" step="0.1" style="width:100%;margin-top:8px" aria-label="Швидкість"></section>
+  <section class="sg"><h3>Поведінка ШІ</h3><p class="sd">Скільки пам'ятати та як відповідати</p>
+    <label class="sl" for="hLen">Повідомлень історії для моделі (за замовчуванням 6)</label>
+    <input id="hLen" type="number" min="1" max="20" class="srch">
+    <button class="tg" id="ecoTg" role="switch" aria-checked="false" style="margin-top:8px"><span class="tx" style="flex:1"><b>Режим економії</b><small style="display:block;color:var(--mut);font-size:13.5px;line-height:1.3">Менше історії й коротші повідомлення в запиті</small></span><span class="sw"></span></button>
+    <label class="sl" for="aboutT">Про мене (інструкції для всіх чатів)</label>
+    <textarea id="aboutT" class="srch" rows="3" placeholder="Наприклад: відповідай коротко, я початківець"></textarea></section>
+  <section class="sg"><h3>Дані</h3><p class="sd">Копії та очищення. Видалення потребує підтвердження</p>
+    <button class="opt" id="backupBtn"><svg class="i"><use href="#shr"/></svg><span class="tx"><b>Зберегти копію</b><small>Чати, проєкти, файли проєктів і ключі</small></span></button>
+    <button class="opt" id="restoreBtn"><svg class="i"><use href="#file"/></svg><span class="tx"><b>Відновити з копії</b></span></button>
+    <button class="opt danger" id="clearBtn"><svg class="i"><use href="#del"/></svg><span class="tx"><b>Видалити всі чати й проєкти</b><small>Ключі й налаштування залишаться</small></span></button></section>
+  <p class="note">Чесні обмеження: безкоштовні моделі слабші за Claude; дуже великі проєкти (тисячі рядків) можуть мати помилки; режим «Майстер» витрачає багато ліміту; синхронізації між пристроями без сервера немає; розділення одного HTML на секції не робиться, натомість великі задачі діляться на окремі файли.</p>
+</div>
+<div class="sheet" id="useSheet">
+  <h2>Токени та ліміти</h2>
+  <div class="usum" id="usum"></div>
+  <div id="urows"></div>
+  <button class="opt" id="simBtn"><svg class="i"><use href="#bolt"/></svg><span class="tx">Перевірити автоперемикання<small>Умовно вичерпує ліміт поточної моделі</small></span></button>
+  <p class="note">Цифри приблизні: у кожного сервісу свої одиниці та час скидання. Точні ліміти покаже кабінет сервісу.</p>
+</div>
+<div class="mod" id="keyModal"><div class="mbox">
+  <svg class="logo" style="color:var(--ac)"><use href="#logo"/></svg>
+  <h2>Ласкаво просимо до YUMI</h2>
+  <p>Вставте безкоштовні ключі (достатньо одного, решту можна додати потім). Ключі зберігаються автоматично, щойно ви їх вставили. Вони зберігаються тільки на цьому пристрої й нікуди не надсилаються, крім самих сервісів.</p>
+  <div id="kList"></div>
+  <div class="hint" id="kHint"></div>
+  <button class="go" id="kGo">Продовжити</button>
+  <button class="lnk" id="kSkip" style="display:none">Скасувати</button>
+  <button class="lnk" id="kExp">Зберегти копію чатів і ключів у файл</button>
+  <button class="lnk" id="kImpB">Відновити з копії</button><input type="file" id="kImp" accept=".json,application/json" hidden>
+  <button class="lnk" id="kDel">Видалити ключі з цього пристрою</button>
+</div></div>
+<div class="art" id="art"><div class="at"><button class="ib" id="artX" aria-label="Закрити"><svg class="i"><use href="#x"/></svg></button><span id="artT">Артефакт</span><span class="sp"></span><button class="row2" id="artS" style="width:auto">Зберегти</button></div><iframe id="artF" sandbox="allow-scripts allow-modals allow-forms allow-pointer-lock"></iframe><div class="cons" id="artC"></div></div>
+<div class="ed" id="ed"><div class="at"><button class="ib" id="edX" aria-label="Закрити" title="Закрити"><svg class="i"><use href="#x"/></svg></button><span id="edN" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="ib" id="edU" aria-label="Скасувати" title="Скасувати"><svg class="i"><use href="#undo"/></svg></button><button class="ib" id="edR" aria-label="Повторити" title="Повторити"><svg class="i"><use href="#redo"/></svg></button><button class="ib" id="edF" aria-label="Пошук" title="Пошук"><svg class="i"><use href="#find"/></svg></button><button class="ib" id="edV" aria-label="Версії" title="Версії"><svg class="i"><use href="#hist"/></svg></button><button class="ib" id="edP" aria-label="Запустити" title="Запустити"><svg class="i"><use href="#play"/></svg></button></div>
+<div class="fb" id="fb"><input class="srch" id="fFi" placeholder="Знайти"><input class="srch" id="fRi" placeholder="Замінити на"><button class="go2" id="fNx">Далі</button><button class="go2" id="fOne">Замінити</button><button class="go2" id="fAll">Усі</button></div>
+<div class="edw"><div class="gut" id="gut"></div><textarea id="edT" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var $=function(s){return document.querySelector(s)};
+var MODELS=[
+ {n:"Gemini Flash",p:"gemini",pn:"Google",id:"gemini-flash-latest",d:"Основна: розмови, фото, файли",lim:1500,vis:1},
+ {n:"Gemini Flash-Lite",p:"gemini",pn:"Google",id:"gemini-flash-lite-latest",d:"Легка, для простих питань",lim:1500,vis:1},
+ {n:"GPT-OSS 120B",p:"groq",pn:"Groq",id:"openai/gpt-oss-120b",d:"Швидка, добре пише код",lim:1000,tlim:200000},
+ {n:"Llama 3.3 70B",p:"groq",pn:"Groq",id:"llama-3.3-70b-versatile",d:"Швидка, для тексту",lim:1000},
+ {n:"Gemini 2.5 Flash",p:"gemini",pn:"Google",id:"gemini-2.5-flash",d:"Окремий ліміт, фото і файли",lim:250,vis:1},
+ {n:"Gemini 2.5 Flash-Lite",p:"gemini",pn:"Google",id:"gemini-2.5-flash-lite",d:"Окремий ліміт, дуже швидка",lim:1000,vis:1},
+ {n:"Gemini 2.5 Pro",p:"gemini",pn:"Google",id:"gemini-2.5-pro",d:"Найрозумніша, ліміт малий",lim:50,vis:1},
+ {n:"Llama 3.1 8B",p:"groq",pn:"Groq",id:"llama-3.1-8b-instant",d:"Дуже швидка, великий ліміт",lim:10000},
+ {n:"GPT-OSS 20B",p:"groq",pn:"Groq",id:"openai/gpt-oss-20b",d:"Легший код і текст",lim:1000,tlim:200000},
+ {n:"Llama 4 Scout",p:"groq",pn:"Groq",id:"meta-llama/llama-4-scout-17b-16e-instruct",d:"Свіжа Llama, для тексту",lim:1000},
+ {n:"Kimi K2",p:"groq",pn:"Groq",id:"moonshotai/kimi-k2-instruct",d:"Сильна в коді",lim:1000},
+ {n:"Cerebras GPT-OSS 120B",p:"cerebras",pn:"Cerebras",id:"gpt-oss-120b",d:"Надшвидка",lim:1000},
+ {n:"Cerebras Qwen3 235B",p:"cerebras",pn:"Cerebras",id:"qwen-3-235b-a22b-instruct-2507",d:"Велика, сильна в коді",lim:1000},
+ {n:"Cerebras Llama 8B",p:"cerebras",pn:"Cerebras",id:"llama3.1-8b",d:"Легка, великий ліміт",lim:5000},
+ {n:"Mistral Small",p:"mistral",pn:"Mistral",id:"mistral-small-latest",d:"Швидка, добре з мовами",lim:1000},
+ {n:"Mistral Large",p:"mistral",pn:"Mistral",id:"mistral-large-latest",d:"Розумніша Mistral",lim:500},
+ {n:"OpenRouter Llama 70B",p:"openrouter",pn:"OpenRouter",id:"meta-llama/llama-3.3-70b-instruct:free",d:"Безкоштовна через OpenRouter",lim:50},
+ {n:"OpenRouter GPT-OSS 20B",p:"openrouter",pn:"OpenRouter",id:"openai/gpt-oss-20b:free",d:"Безкоштовна через OpenRouter",lim:50},
+ {n:"OpenRouter Qwen Coder",p:"openrouter",pn:"OpenRouter",id:"qwen/qwen3-coder:free",d:"Для коду, безкоштовна",lim:50}
+];
+var META={"gemini-flash-latest":[8,65536,1048576,"code vision fast long"],"gemini-flash-lite-latest":[6,65536,1048576,"vision fast long"],"openai/gpt-oss-120b":[8,32768,131072,"code fast"],"llama-3.3-70b-versatile":[7,32768,131072,"code fast"],"gemini-2.5-flash":[8,65536,1048576,"code vision long"],"gemini-2.5-flash-lite":[6,65536,1048576,"vision fast long"],"gemini-2.5-pro":[10,65536,1048576,"code vision long"],"llama-3.1-8b-instant":[4,8192,131072,"fast"],"openai/gpt-oss-20b":[6,32768,131072,"code fast"],"meta-llama/llama-4-scout-17b-16e-instruct":[6,8192,131072,"vision fast"],"moonshotai/kimi-k2-instruct":[8,16384,131072,"code"],"gpt-oss-120b":[8,32768,131072,"code fast"],"qwen-3-235b-a22b-instruct-2507":[8,32768,131072,"code"],"llama3.1-8b":[4,8192,8192,"fast"],"mistral-small-latest":[6,32768,32768,"code fast"],"mistral-large-latest":[8,32768,131072,"code"],"meta-llama/llama-3.3-70b-instruct:free":[7,8192,65536,"code"],"openai/gpt-oss-20b:free":[6,8192,131072,"code"],"qwen/qwen3-coder:free":[8,16384,262144,"code long"]};
+MODELS.forEach(function(m){var x=META[m.id]||[5,4096,32000,""];m.q=x[0];m.maxOut=x[1];m.ctx=x[2];m.tags=x[3].split(" ").filter(Boolean)});
+var FIXN=0,FMT="\nФормат змін (код пиши ЛИШЕ так, не звичайними блоками коду):\nСтворити або замінити файл:\n<<<FILE шлях/файл.ext>>>\nповний вміст\n<<<END>>>\nПравка існуючого файлу (для змін в існуючих файлах лише так):\n<<<EDIT шлях/файл.ext>>>\n<<<<<<< SEARCH\nточний фрагмент із файлу\n=======\nновий фрагмент\n>>>>>>> REPLACE\n<<<END>>>\nПапки створюються через шлях з /. Поза блоками дай лише коротке пояснення. Якщо не бачиш вмісту потрібного файлу, попроси користувача згадати його через @назва.";
+var SYS="Ти YUMI, помічник. Відповідай мовою користувача, стисло. Коли просять гру, застосунок, сторінку чи калькулятор, створи файл у форматі змін (нижче): для однієї гри чи сторінки один index.html з CSS і JS всередині; для картинки файл .svg. Код не пояснюй довго.";
+var ACC=["#f2f2f2","#b0b0b0","#7a7a7a","#4a4a4a"];
+var AVG=1500,S,P=[],busy=false,K={},ABORT=null,SPK=false,SPKT=0,SPB=null,UT=[];
+function st(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function ld(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function fresh(){var n=Date.now();return {id:uid(),title:"Новий чат",pinned:false,projectId:null,created:n,updated:n,msgs:[]}}
+function today(){return new Date().toISOString().slice(0,10)}
+function fmt(n){return Math.round(n).toLocaleString("uk-UA")}
+function ico(id){return '<svg class="i"><use href="#'+(id==="mic"||id==="plus"||id==="send"?"i-":"")+id+'"/></svg>'}
+function loadKeys(){try{K=JSON.parse(ld("yumi_keys"))||{}}catch(e){K={}}}
+function migrate(){
+  if(!S.use)S.use={};if(!S.projects)S.projects=[];if(!S.fs)S.fs=[];if(!S.mode)S.mode="auto";if(!S.arts)S.arts=[];
+  S.chats.forEach(function(c){if(c.pin!==undefined){c.pinned=!!c.pin;delete c.pin}if(c.proj!==undefined){c.projectId=c.proj||null;delete c.proj}if(!c.created)c.created=Date.now();if(!c.updated)c.updated=c.created;if(c.projectId===undefined)c.projectId=null;c.pinned=!!c.pinned});
+  S.projects.forEach(function(p){if(p.instr!==undefined){p.instructions=p.instr;delete p.instr}p.desc=p.desc||"";p.instructions=p.instructions||"";p.color=p.color||ACC[0];p.files=p.files||[];p.pinned=!!p.pinned;p.archived=!!p.archived;p.created=p.created||Date.now();p.updated=p.updated||p.created});
+  S.set=Object.assign({fs:16,rate:1,voice:"",hist:6,eco:false,about:"",order:null,dis:[],code:{}},S.set||{});
+}
+function init(){
+  try{S=JSON.parse(ld("yumi1"))}catch(e){S=null}
+  if(!S||!S.chats||!S.chats.length){var c=fresh();S={chats:[c],cur:c.id,auto:true,model:0,use:{},day:today()}}
+  migrate();
+  if(S.day!==today()){S.use={};S.day=today()}
+  Object.keys(S.use).forEach(function(k){S.use[k].off=false;S.use[k].until=0});
+  if(S.model>=MODELS.length)S.model=0;
+}
+function save(){var o=JSON.parse(JSON.stringify(S,function(k,v){return k==="u"?undefined:v}));st("yumi1",JSON.stringify(o))}
+function cur(){return S.chats.filter(function(c){return c.id===S.cur})[0]}
+function U(i){return S.use[i]||(S.use[i]={req:0,tok:0,off:false,n:0,until:0})}
+function left(i){var m=MODELS[i],u=U(i),l=m.lim-u.req;if(m.tlim)l=Math.min(l,Math.floor((m.tlim-u.tok)/AVG));return Math.max(0,l)}
+function hasKey(i){return !!K[MODELS[i].p]}
+function usable(i,vis){return hasKey(i)&&S.set.dis.indexOf(MODELS[i].id)<0&&!U(i).off&&!(U(i).until>Date.now())&&left(i)>0&&(!vis||MODELS[i].vis)}
+function toast(t){var e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove("show")},2600)}
+function openSheet(id){closeSheets();$("#"+id).classList.add("open");$("#scrim").classList.add("show")}
+function closeSheets(){document.querySelectorAll(".sheet").forEach(function(s){s.classList.remove("open")});$("#scrim").classList.remove("show");$("#side").classList.remove("open")}
+
+function renderSide(){
+  $("#list").innerHTML="";var q=($("#cq").value||"").toLowerCase().trim();
+  S.chats.filter(function(c){return !q||c.title.toLowerCase().indexOf(q)>=0||c.msgs.some(function(m){return m.t&&m.t.toLowerCase().indexOf(q)>=0})}).sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||(b.updated||0)-(a.updated||0)}).forEach(function(c){
+    var p=proj(c.projectId),d=document.createElement("div");d.className="it"+(c.id===S.cur?" on":"");
+    d.innerHTML='<button class="t"></button><button class="d" aria-label="Меню">'+ico("dots")+'</button>';
+    var t=d.children[0];t.textContent=c.title;if(c.pinned)t.insertAdjacentHTML("afterbegin",ico("pin"));
+    t.onclick=function(){if(t.dataset.lp){delete t.dataset.lp;return}S.cur=c.id;save();closeSheets();tab("chat");renderAll()};
+    d.children[1].onclick=function(){chatMenu(c)};
+    lp(t,function(){chatMenu(c)});
+    $("#list").appendChild(d);
+  });
+}
+function inline(p,t){
+  t.split(/(\*\*[^*]+\*\*)/).forEach(function(s){
+    if(!s)return;
+    if(s.slice(0,2)==="**"&&s.slice(-2)==="**"&&s.length>4){var b=document.createElement("b");b.textContent=s.slice(2,-2);p.appendChild(b)}
+    else p.appendChild(document.createTextNode(s));
+  });
+}
+var CURSYS=SYS,TAB="chat",PV=null;
+function proj(id){return (S.projects||[]).filter(function(p){return p.id===id})[0]}
+function copyT(t){try{navigator.clipboard.writeText(t);toast("Скопійовано")}catch(x){}}
+var SPK=false;
+function spkReset(){if(SPB&&SPB.dataset.ic){SPB.innerHTML=SPB.dataset.ic;SPB.setAttribute("aria-label","Озвучити")}SPB=null}
+function getVoicesSafe(cb){var s=window.speechSynthesis,v=s.getVoices();if(v.length){cb(v);return}var d=false;function f(){if(d)return;d=true;try{s.removeEventListener("voiceschanged",f)}catch(e){}cb(s.getVoices())}try{s.addEventListener("voiceschanged",f)}catch(e){}setTimeout(f,1500)}
+function speak(t,b){var s=window.speechSynthesis;
+  if(!s||!window.SpeechSynthesisUtterance){toast("Озвучення не підтримується в цьому браузері");return}
+  var wasOn=SPK&&SPB===b;SPKT++;try{s.cancel()}catch(e){}SPK=false;UT=[];spkReset();
+  if(wasOn)return;
+  var tk=SPKT;if(b&&!b.dataset.ic)b.dataset.ic=b.innerHTML;
+  var txt=t.replace(/```[\s\S]*?```/g," ").replace(/<<<(FILE|EDIT)[\s\S]*?<<<END>>>/g," ").replace(/https?:\/\/\S+/g," ").replace(/[*#`]/g,"").replace(/^\s*[-•]\s+/gm,"").replace(/[ \t]+/g," ").trim();
+  if(!txt){toast("Немає тексту для озвучення");return}
+  var ps=txt.match(/[^.!?\n]+[.!?]*\s*/g)||[txt],ch=[],cur="";
+  ps.forEach(function(p){if((cur+p).length>180&&cur){ch.push(cur);cur=p}else cur+=p});if(cur)ch.push(cur);
+  SPK=true;SPB=b;if(b){b.innerHTML=ico("stop");b.setAttribute("aria-label","Зупинити")}
+  function end(){if(tk===SPKT){SPK=false;UT=[];spkReset()}}
+  getVoicesSafe(function(vs){if(tk!==SPKT)return;
+    var v=S.set.voice?vs.filter(function(x){return x.name===S.set.voice})[0]:vs.filter(function(x){return /^uk/i.test(x.lang)})[0];
+    if(!v&&!S.set.voice)toast("Українського голосу не знайдено. Додайте його в налаштуваннях Android: Синтез мовлення");
+    var k=0,started=false;
+    function next(){if(tk!==SPKT)return;if(k>=ch.length){end();return}
+      var u=new SpeechSynthesisUtterance(ch[k++]);UT.push(u);u.lang=v?v.lang:"uk-UA";if(v)u.voice=v;u.rate=S.set.rate||1;
+      u.onstart=function(){started=true};u.onend=next;
+      u.onerror=function(e){if(tk!==SPKT)return;if(e.error!=="canceled"&&e.error!=="interrupted")toast("Не вдалося озвучити: "+e.error);end()};
+      s.speak(u)}
+    setTimeout(function(){if(tk!==SPKT)return;try{s.resume()}catch(e){}next();
+      setTimeout(function(){if(tk===SPKT&&!started){try{s.cancel()}catch(e){}toast("Озвучення не запустилося. Перевірте, що в Android увімкнено «Синтез мовлення» з українською");end()}},6000)},120)})}
+function lp(el,fn){var t;el.addEventListener("touchstart",function(){t=setTimeout(function(){el.dataset.lp=1;fn()},550)},{passive:true});["touchend","touchmove","touchcancel"].forEach(function(e){el.addEventListener(e,function(){clearTimeout(t)},{passive:true})});el.addEventListener("contextmenu",function(e){e.preventDefault();fn()})}
+function sheet(title,items){var s=$("#dynSheet");s.innerHTML="<h2></h2>";s.firstChild.textContent=title;
+  items.forEach(function(it){var b=document.createElement("button");b.className="opt";b.innerHTML=ico(it[0])+'<span class="tx"></span>';b.lastChild.textContent=it[1];b.onclick=function(){closeSheets();it[2]()};s.appendChild(b)});openSheet("dynSheet")}
+function delChat(id){if(!confirm("Видалити чат?"))return;S.chats=S.chats.filter(function(x){return x.id!==id});if(!S.chats.length)S.chats.push(fresh());if(S.cur===id)S.cur=S.chats[S.chats.length-1].id;save();renderAll();if(TAB==="proj")renderProj()}
+function rf(){renderAll();if(TAB==="proj")renderProj()}
+function share(c){var txt=c.title+"\n\n"+c.msgs.filter(function(m){return m.r==="u"||m.r==="a"}).map(function(m){return (m.r==="u"?"Я: ":"YUMI: ")+m.t}).join("\n\n"),nm=c.title.replace(/[^\wа-яіїєґ ]+/gi,"").trim().slice(0,30)||"chat";
+  try{var f=new File([txt],nm+".txt",{type:"text/plain"});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:c.title}).catch(function(){});return}if(navigator.share){navigator.share({title:c.title,text:txt}).catch(function(){});return}}catch(e){}
+  dl(nm+".txt",txt)}
+var DIP=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();DIP=e});
+function addHome(){if(DIP){DIP.prompt();DIP=null}else toast("У меню браузера (меню браузера або «Поділитися») оберіть «Додати на головний екран»")}
+function chatMenu(c){sheet(c.title,[
+  ["edit","Перейменувати",function(){var t=prompt("Нова назва",c.title);if(t&&t.trim()){c.title=t.trim().slice(0,60);save();rf()}}],
+  ["pin",c.pinned?"Відкріпити":"Закріпити",function(){c.pinned=!c.pinned;save();rf()}],
+  ["fold","Додати до проєкту",function(){toProject(c)}],
+  ["shr","Поділитися",function(){share(c)}],
+  ["home","Додати на головний екран",addHome],
+  ["del","Видалити",function(){delChat(c.id)}]])}
+function toProject(c){var it=[["x","Без проєкту",function(){c.projectId=null;save();rf()}]];
+  S.projects.filter(function(p){return !p.archived}).forEach(function(p){it.push(["fold",p.name,function(){c.projectId=p.id;p.updated=Date.now();save();rf();toast("Перенесено до проєкту")}])});
+  if(it.length===1)toast("Спершу створіть проєкт у вкладці «Проєкти»");else sheet("Додати до проєкту",it)}
+function chatsOf(id){return S.chats.filter(function(c){return c.projectId===id}).sort(function(a,b){return (b.updated||0)-(a.updated||0)})}
+function form(title,fl,cb){var s=$("#dynSheet");s.innerHTML="<h2></h2>";s.firstChild.textContent=title;var els={};
+  fl.forEach(function(f){var l=document.createElement("h3");l.textContent=f[1];s.appendChild(l);var e;
+    if(f[3]==="col"){e=document.createElement("div");e.className="sw2";e.value=f[2];PCOL.forEach(function(c){var b=document.createElement("button");b.style.background=c;b.setAttribute("aria-label","Колір");if(c===f[2])b.className="on";b.onclick=function(){e.value=c;[].forEach.call(e.children,function(x){x.classList.toggle("on",x===b)})};e.appendChild(b)})}
+    else{e=document.createElement(f[3]==="area"?"textarea":"input");e.className="srch";if(f[3]==="area")e.rows=3;e.value=f[2]||""}
+    els[f[0]]=e;s.appendChild(e)});
+  var fr=document.createElement("div");fr.className="frow";var cn=document.createElement("button");cn.className="go sec";cn.textContent="Скасувати";cn.onclick=function(){closeSheets()};var b=document.createElement("button");b.className="go";b.textContent=/^Нов/.test(title)?"Створити":"Зберегти";b.onclick=function(){var o={};for(var k in els)o[k]=els[k].value;closeSheets();cb(o)};fr.appendChild(cn);fr.appendChild(b);s.appendChild(fr);openSheet("dynSheet")}
+function msgMenu(m){var c=cur();sheet("Повідомлення",[
+  ["cp","Копіювати",function(){copyT(m.t)}],
+  ["edit","Редагувати й надіслати знову",function(){if(busy)return;var i=c.msgs.indexOf(m);if(i<0)return;c.msgs.length=i;save();renderFeed();var e=$("#inp");e.value=m.t;st("yd_"+c.id,m.t);e.dispatchEvent(new Event("input"));e.focus()}],
+  ["del","Видалити",function(){var i=c.msgs.indexOf(m);if(i>=0)c.msgs.splice(i,1);save();renderFeed()}]])}
+function regen(m){if(busy)return;var c=cur(),i=c.msgs.indexOf(m);while(i>=0&&c.msgs[i].r!=="u")i--;if(i<0)return;var t=c.msgs[i].t;c.msgs.length=i;save();send(t)}
+function tab(n){TAB=n;var ch=n==="chat";[".top",".feed",".comp"].forEach(function(q){$(q).style.display=ch?"":"none"});
+  [["proj","#vProj"],["code","#vCode"],["art","#vArt"]].forEach(function(k){$(k[1]).style.display=n===k[0]?"flex":"none"});
+  document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t===n)});
+  if(n==="proj")renderProj();if(n==="code")renderCode();if(n==="art")renderArt()}
+function pic(p){return ""}
+var PCOL=["#f2f2f2","#c8c8c8","#9a9a9a","#707070","#4a4a4a","#2e2e2e"],PQ="",PA=false;
+function dd(t){return new Date(t||Date.now()).toLocaleDateString("uk-UA",{day:"numeric",month:"short"})}
+function ptok(p){return p.files.reduce(function(a,f){return a+f.tok},0)}
+function projForm(p){form(p?"Змінити проєкт":"Новий проєкт",[["name","Назва",p&&p.name],["desc","Опис",p&&p.desc,"area"],["instructions","Інструкції (додаються до кожного чату проєкту)",p&&p.instructions,"area"]],function(o){
+  if(!o.name.trim()){toast("Потрібна назва");return}
+  var q=p||{id:uid(),files:[],pinned:false,archived:false,created:Date.now()};if(!p)S.projects.push(q);
+  q.name=o.name.trim().slice(0,40);q.icon="";q.color=o.color||PCOL[0];q.desc=o.desc.trim();q.instructions=o.instructions.trim();q.updated=Date.now();
+  save();if(!p)PV=q.id;renderAll();renderProj()})}
+function projMenu(p){sheet(p.name,[["edit","Редагувати",function(){projForm(p)}],["pin",p.pinned?"Відкріпити":"Закріпити",function(){p.pinned=!p.pinned;save();renderProj()}],["arch",p.archived?"Повернути з архіву":"Архівувати",function(){p.archived=!p.archived;if(PV===p.id)PV=null;save();renderProj()}],["del","Видалити",function(){delProject(p)}]])}
+function delProject(p){sheet("Видалити «"+p.name+"»?",[["x","Видалити проєкт, чати залишити",function(){killProj(p,false)}],["del","Видалити проєкт разом із чатами",function(){killProj(p,true)}]])}
+function killProj(p,wc){p.files.forEach(function(f){fdel(f.id)});S.fs.filter(function(n){return n.proj===p.id}).forEach(function(n){fdel("c:"+n.id);fdel("v:"+n.id)});S.fs=S.fs.filter(function(n){return n.proj!==p.id});S.arts=S.arts.filter(function(a){return S.fs.some(function(n){return n.id===a.nid})});
+  if(wc){S.chats=S.chats.filter(function(c){return c.projectId!==p.id});if(!S.chats.length)S.chats.push(fresh());if(!cur())S.cur=S.chats[S.chats.length-1].id}
+  else S.chats.forEach(function(c){if(c.projectId===p.id)c.projectId=null});
+  S.projects=S.projects.filter(function(x){return x!==p});PV=null;save();renderAll();renderProj()}
+function renderProj(){var v=$("#vProj");v.innerHTML="";var p=PV&&proj(PV),h=document.createElement("div");h.className="ph";v.appendChild(h);
+  if(!p){PV=null;h.innerHTML='<h2>Проєкти</h2><button class="go2">'+ico("plus")+'Новий</button>';h.lastChild.onclick=function(){projForm(null)};
+    var q=document.createElement("input");q.className="srch";q.placeholder="Пошук проєктів";q.value=PQ;v.appendChild(q);
+    var sg=document.createElement("div");sg.className="seg";sg.innerHTML='<button>Активні</button><button>Архів</button>';sg.children[PA?1:0].classList.add("on");v.appendChild(sg);
+    var box=document.createElement("div");v.appendChild(box);
+    function draw(){box.innerHTML="";var ql=PQ.toLowerCase().trim(),ls=S.projects.filter(function(x){return !!x.archived===PA&&(!ql||(x.name+" "+x.desc).toLowerCase().indexOf(ql)>=0)}).sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||b.updated-a.updated});
+      if(!ls.length){box.innerHTML='<p class="emp"></p>';box.firstChild.textContent=PQ?"Нічого не знайдено":PA?"Архів порожній":"Проєктів ще немає. Проєкт збирає чати, інструкції та файли в одному місці.";return}
+      ls.forEach(function(x){var b=document.createElement("div");b.className="pc";
+        b.innerHTML='<span class="pi"></span><button class="tx" style="flex:1;min-width:0"><b></b><small></small></button><button class="d ib" aria-label="Меню">'+ico("dots")+'</button>';
+        var pi=b.children[0];if(pic(x))pi.textContent=pic(x);else pi.innerHTML=ico("fold");pi.style.cssText="width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--hi)";
+        b.querySelector("b").textContent=x.name;b.querySelector("small").textContent=(x.pinned?"Закріплено · ":"")+"Чатів: "+chatsOf(x.id).length+" · "+dd(x.updated);if(x.desc){var d2=document.createElement("small");d2.className="pdesc";d2.textContent=x.desc;b.querySelector("b").after(d2)}
+        b.children[1].onclick=function(){PV=x.id;renderProj()};b.children[2].onclick=function(){projMenu(x)};box.appendChild(b)})}
+    q.oninput=function(){PQ=q.value;draw()};sg.onclick=function(e){var bt=e.target.closest("button"),i=[].indexOf.call(sg.children,bt);if(i<0)return;PA=i===1;renderProj()};draw();return}
+  h.innerHTML='<button class="ib" aria-label="Назад"><svg class="i"><use href="#back"/></svg></button><h2></h2><button class="ib" aria-label="Меню">'+ico("dots")+'</button>';h.children[1].textContent=(pic(p)?pic(p)+" ":"")+p.name;
+  h.children[0].onclick=function(){PV=null;renderProj()};h.children[2].onclick=function(){projMenu(p)};
+  if(p.desc){var ds=document.createElement("p");ds.className="emp";ds.style.cssText="margin:6px 0;text-align:left";ds.textContent=p.desc;v.appendChild(ds)}
+  var il=document.createElement("div");il.className="lab";il.style.paddingLeft="2px";il.textContent="Інструкції для ШІ";v.appendChild(il);var pi2=document.createElement("div");pi2.className="pins";pi2.style.margin="0 0 12px";pi2.textContent=p.instructions?p.instructions:"Інструкцій ще немає. Додайте їх через меню проєкту, пункт «Редагувати»: вони додаються до кожного чату проєкту.";v.appendChild(pi2);
+  var nb=document.createElement("button");nb.className="go2";nb.innerHTML=ico("plus")+"Новий чат у проєкті";nb.style.width="100%";
+  nb.onclick=function(){newChat();cur().projectId=p.id;p.updated=Date.now();save();tab("chat");renderAll()};v.appendChild(nb);
+  var fh=document.createElement("div");fh.className="lab";fh.style.paddingLeft="2px";fh.textContent="Файли проєкту · ≈"+fmt(ptok(p))+" токенів";v.appendChild(fh);
+  p.files.forEach(function(f){var r=document.createElement("div");r.className="pc";r.innerHTML=ico("file")+'<span class="tx" style="flex:1;min-width:0"><b></b><small></small></span><button class="d ib" aria-label="Дії з файлом">'+ico("dots")+'</button>';
+    r.querySelector("b").textContent=f.name;r.querySelector("small").textContent="≈"+fmt(f.tok)+" токенів · "+Math.max(1,Math.round(f.size/1024))+" КБ";
+    r.lastChild.onclick=function(){sheet(f.name,[["del","Видалити файл",function(){if(!confirm("Видалити файл «"+f.name+"»?"))return;fdel(f.id);p.files=p.files.filter(function(x){return x!==f});save();renderProj()}]])};v.appendChild(r)});
+  var ab=document.createElement("button");ab.className="row2";ab.innerHTML=ico("plus")+"Додати файл (текст до 300 КБ)";ab.onclick=function(){$("#fPF").click()};v.appendChild(ab);
+  var ch=document.createElement("div");ch.className="lab";ch.style.paddingLeft="2px";ch.textContent="Чати проєкту · "+chatsOf(p.id).length;v.appendChild(ch);
+  var cl=chatsOf(p.id);if(!cl.length)v.insertAdjacentHTML("beforeend",'<p class="emp" style="margin-top:8px">Чатів у проєкті ще немає.</p>');
+  cl.forEach(function(c){var b=document.createElement("div");b.className="pc";b.innerHTML='<button class="tx" style="flex:1;min-width:0;text-align:left"></button><button class="d ib" aria-label="Меню">'+ico("dots")+'</button>';
+    b.firstChild.textContent=c.title;b.firstChild.onclick=function(){S.cur=c.id;save();tab("chat");renderAll()};b.lastChild.onclick=function(){chatMenu(c)};v.appendChild(b)})}
+// IndexedDB для файлів проєктів
+var DB;function idb(){return DB||(DB=new Promise(function(res,rej){var r=indexedDB.open("yumi_files",1);r.onupgradeneeded=function(){r.result.createObjectStore("f")};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}}))}
+function idbOp(mode,fn){return idb().then(function(d){return new Promise(function(res,rej){var t=d.transaction("f",mode),q=fn(t.objectStore("f"));t.oncomplete=function(){res(q&&q.result)};t.onerror=function(){rej(t.error)}})})}
+function fput(k,v){return idbOp("readwrite",function(s){return s.put(v,k)})}
+function fget(k){return idbOp("readonly",function(s){return s.get(k)})}
+function fdel(k){return idbOp("readwrite",function(s){return s.delete(k)}).catch(function(){})}
+$("#nav").onclick=function(e){var b=e.target.closest("button");if(b)tab(b.dataset.t)};
+$("#moreTop").onclick=function(){chatMenu(cur())};
+var EXT={html:"html",svg:"svg",js:"js",javascript:"js",python:"py",py:"py",css:"css",json:"json",java:"java",cpp:"cpp",c:"c",sql:"sql",bash:"sh",sh:"sh"};
+function dl(name,code){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([code],{type:"text/plain;charset=utf-8"}));a.download=name;document.body.appendChild(a);a.click();a.remove();toast("Збережено: "+name)}
+var HOOK='<scr'+'ipt>(function(){function r(t){try{parent.postMessage({yc:1,t:String(t)},"*")}catch(e){}}window.onerror=function(m,s,l){r(m+" (рядок "+l+")")};window.addEventListener("unhandledrejection",function(e){r("Promise: "+(e.reason&&e.reason.message||e.reason))});var ce=console.error;console.error=function(){r([].join.call(arguments," "));ce.apply(console,arguments)}})()</scr'+'ipt>';
+window.addEventListener("message",function(e){if(e.source!==$("#artF").contentWindow||!e.data||!e.data.yc)return;var c=$("#artC");c.classList.add("show");c.textContent+=(c.textContent?"\n":"")+"Помилка: "+e.data.t});
+function runArt(lg,code){
+  var doc=lg==="svg"?'<body style="margin:0;display:grid;place-items:center;min-height:100vh;background:#fff">'+code+'</body>':(/<head[^>]*>/i.test(code)?code.replace(/<head[^>]*>/i,function(x){return x+HOOK}):HOOK+code);$("#artC").textContent="";$("#artC").classList.remove("show");
+  $("#artF").srcdoc=doc;$("#artT").textContent=lg==="svg"?"Картинка":"Артефакт";
+  $("#artS").onclick=function(){dl("yumi-"+Date.now().toString(36)+"."+lg,code)};
+  $("#art").classList.add("show");
+}
+$("#artX").onclick=function(){$("#art").classList.remove("show");$("#artF").srcdoc=""};
+function acts(lg,code){
+  var d=document.createElement("div");d.className="acts";
+  if(lg==="html"||lg==="svg"){var r=document.createElement("button");r.innerHTML=ico("play")+"Запустити";r.onclick=function(){runArt(lg,code)};d.appendChild(r)}
+  var s=document.createElement("button");s.textContent="⤓ Зберегти файл";s.onclick=function(){dl("yumi-"+Date.now().toString(36)+"."+(EXT[lg]||"txt"),code)};d.appendChild(s);
+  return d;
+}
+function inl(p,t){t.split(/(\*\*[^*]+\*\*|`[^`]+`)/).forEach(function(s){if(!s)return;var e;
+  if(s.length>4&&s.slice(0,2)==="**"&&s.slice(-2)==="**"){e=document.createElement("b");e.textContent=s.slice(2,-2)}
+  else if(s.length>2&&s[0]==="`"&&s.slice(-1)==="`"){e=document.createElement("code");e.textContent=s.slice(1,-1)}
+  else e=document.createTextNode(s);p.appendChild(e)})}
+function md(w,t){var lst=null,par=null;
+  t.split("\n").forEach(function(l){var m;
+    if(!l.trim()){lst=null;par=null;return}
+    if(m=l.match(/^(#{1,3})\s+(.*)/)){lst=null;par=null;var h=document.createElement("h"+m[1].length);inl(h,m[2]);w.appendChild(h);return}
+    if(m=l.match(/^\s*([-*•]|\d+[.)])\s+(.*)/)){var tg=/\d/.test(m[1])?"ol":"ul";if(!lst||lst.tagName.toLowerCase()!==tg){lst=document.createElement(tg);w.appendChild(lst)}par=null;var li=document.createElement("li");inl(li,m[2]);lst.appendChild(li);return}
+    lst=null;if(!par){par=document.createElement("p");w.appendChild(par)}else par.appendChild(document.createElement("br"));inl(par,l)})}
+function parseOps(t){var ops=[],bad=false;
+  var rest=t.replace(/<<<(FILE|EDIT)[ \t]+([^\n>]+?)[ \t]*>>>\n([\s\S]*?)\n?<<<END>>>/g,function(_,k,p,b){p=p.trim().replace(/^[\/.]+/,"");
+    if(k==="FILE")ops.push({k:"f",p:p,b:b});else{var ed=[],re=/<<<<<<< SEARCH\n([\s\S]*?)\n?=======\n([\s\S]*?)\n?>>>>>>> REPLACE/g,x;while(x=re.exec(b))ed.push([x[1],x[2]]);if(!ed.length)bad=true;ops.push({k:"e",p:p,ed:ed})}return ""});
+  if(/<<<(FILE|EDIT)\b|<<<END>>>/.test(rest))bad=true;return {ops:ops,rest:rest,bad:bad}}
+function body(t,m){var w=document.createElement("div");w.className="bd";var P=parseOps(t);
+  P.rest.split("```").forEach(function(p,i){if(i%2){var mm=p.match(/^([\w+-]*)\n/),lg=mm?mm[1].toLowerCase():"",cd=p.replace(/^[\w+-]*\n/,"").replace(/\n$/,"");w.appendChild(codeCard(lg,cd))}else if(p.trim())md(w,p)});
+  if(P.ops.length&&m)w.appendChild(opsCard(P,m));return w}
+function renderFeed(){
+  var c=cur(),col=$("#col");col.innerHTML="";
+  if(!c.msgs.length){
+    col.innerHTML='<div class="hero"><h1>Привіт!</h1><p>Чим допомогти?</p><div class="chips">'+
+    '<button data-q="Напиши код простого калькулятора">'+ico("code")+'Написати код</button>'+
+    '<button data-q="Поясни простими словами, як працює інтернет">'+ico("bolt")+'Пояснити просто</button>'+
+    '<button data-q="Допоможи розібрати файл, який я надішлю">'+ico("file")+'Розібрати файл</button></div></div>';
+    col.querySelectorAll(".chips button").forEach(function(b){b.onclick=function(){send(b.dataset.q)}});
+    return;
+  }
+  c.msgs.forEach(function(m){col.appendChild(msgEl(m))});
+  $("#feed").scrollTop=1e9;
+}
+function msgEl(m){
+  var e=document.createElement("div");
+  if(m.r==="n"){e.className="ntc";e.innerHTML=ico("bolt");var s=document.createElement("span");s.textContent=m.t;e.appendChild(s);return e}
+  if(m.r==="u"){
+    e.className="me";
+    if(m.a&&m.a.length){var a=document.createElement("div");a.className="att";
+      m.a.forEach(function(x){var d=document.createElement("div");
+        if(x.u){d.innerHTML='<img src="'+x.u+'" alt="">'}else{d.className="fc";d.innerHTML=ico("file")+'<span></span>';d.children[1].textContent=x.n}
+        a.appendChild(d)});
+      e.appendChild(a)}
+    e.appendChild(document.createTextNode(m.t));lp(e,function(){msgMenu(m)});return e;
+  }
+  e.className="ai";e.innerHTML='<div class="av"><svg class="logo"><use href="#logo"/></svg></div>';
+  var b=body(m.t,m);var meta=document.createElement("div");meta.className="meta";
+  meta.innerHTML='<span></span><button aria-label="Копіювати">'+ico("cp")+'</button><button aria-label="Озвучити">'+ico("vol")+'</button><button aria-label="Повторити відповідь">'+ico("ref")+'</button><button aria-label="Ще">'+ico("dots")+'</button>';
+  meta.children[0].textContent=m.m;
+  meta.children[1].onclick=function(){copyT(m.t)};meta.children[2].onclick=function(){speak(m.t,meta.children[2])};meta.children[3].onclick=function(){regen(m)};meta.children[4].onclick=function(){msgMenu(m)};
+  b.appendChild(meta);e.appendChild(b);return e;
+}
+function renderModel(){
+  $("#mpName").textContent=(S.auto?"Авто · ":"")+MODELS[S.model].n;
+  $("#autoTg").setAttribute("aria-checked",S.auto);
+  var lastP="";
+  $("#mlist").innerHTML=MODELS.map(function(m,i){
+    var off=S.set.dis.indexOf(m.id)>=0,s=off?"вимкнено":!hasKey(i)?"потрібен ключ":U(i).off||left(i)<1?"ліміт вичерпано":"≈"+fmt(left(i))+" залишилось",ok=!off&&hasKey(i)&&!U(i).off&&left(i)>=1,h="";
+    if(m.pn!==lastP){lastP=m.pn;h='<h3>'+m.pn+'</h3>'}
+    return h+'<button class="opt'+(ok?"":" dis")+'" data-i="'+i+'"><span class="tx"><b>'+m.n+'</b><small>'+m.d+'</small><span class="chip">'+s+'</span></span><span class="ck">'+(i===S.model?ico("ok"):"")+'</span></button>';
+  }).join("");
+  document.querySelectorAll("#mlist .opt").forEach(function(b){b.onclick=function(){
+    var i=+b.dataset.i;if(S.set.dis.indexOf(MODELS[i].id)>=0){toast("Модель вимкнено в налаштуваннях");return}if(!hasKey(i)){toast("Спершу додай ключ "+MODELS[i].pn+" в налаштуваннях");return}
+    S.model=i;save();renderModel();closeSheets()}});
+}
+function renderUsage(){
+  var tt=0,lt=0;
+  var rows=MODELS.map(function(m,i){
+    var u=U(i),p=Math.min(100,Math.round(u.req/m.lim*100));
+    tt+=u.tok;if(hasKey(i))lt+=left(i);
+    return '<div class="ur"><div class="uh"><b>'+m.n+'</b><span>'+m.pn+'</span></div><div class="bar2"><i style="width:'+p+'%"></i></div><div class="uf"><span>'+fmt(u.req)+' / '+fmt(m.lim)+' запитів</span><span>токенів: '+fmt(u.tok)+(m.tlim?' / '+fmt(m.tlim):'')+'</span></div></div>';
+  }).join("");
+  $("#usum").innerHTML='<div class="sc"><b>'+fmt(tt)+'</b><small>токенів сьогодні</small></div><div class="sc"><b>≈'+fmt(lt)+'</b><small>відповідей залишилось</small></div><div class="sc"><b>'+MODELS.filter(function(m,i){return hasKey(i)}).length+'</b><small>моделей підключено</small></div>';
+  $("#urows").innerHTML=rows;
+}
+function renderPend(){
+  var p=$("#pend");p.innerHTML="";
+  P.forEach(function(x,i){
+    var d=document.createElement("div");
+    if(x.u){d.innerHTML='<img src="'+x.u+'" alt="">';d.style.position="relative"}
+    else{d.className="fc";d.innerHTML=ico("file")+'<span></span>';d.children[1].textContent=x.n}
+    var r=document.createElement("button");r.setAttribute("aria-label","Прибрати");r.innerHTML=ico("x");
+    if(x.u)r.style.cssText="position:absolute;right:2px;top:2px;background:var(--bg);border-radius:50%;padding:3px;display:grid";
+    r.onclick=function(){P.splice(i,1);renderPend()};d.appendChild(r);p.appendChild(d);
+  });
+}
+function renderAll(){renderSide();renderFeed();renderModel();var e=$("#inp");if(e&&!busy){e.value=ld("yd_"+S.cur)||"";e.style.height="auto";e.style.height=e.scrollHeight+"px"}}
+
+function b64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1])};r.onerror=rej;r.readAsDataURL(f)})}
+function isText(f){return /^text\//.test(f.type)||/\.(txt|md|csv|json|js|py|html|css|ts|xml|yml|yaml|log)$/i.test(f.name)}
+function history(c){
+  var h=[];
+  c.msgs.slice(0,-1).forEach(function(m){
+    if(m.r!=="u"&&m.r!=="a")return;
+    var role=m.r==="u"?"user":"assistant";
+    if(h.length&&h[h.length-1].role===role)h[h.length-1].text+="\n"+m.t;else h.push({role:role,text:m.t});
+  });
+  var n=Math.max(1,S.set.eco?Math.min(S.set.hist,2):S.set.hist);return h.slice(-n).map(function(x){return {role:x.role,text:x.text.slice(0,S.set.eco?1500:3000)}});
+}
+async function call(m,hist,prompt,media,sys){
+  var r,d;
+  if(m.p==="gemini"){
+    var contents=hist.map(function(h){return {role:h.role==="user"?"user":"model",parts:[{text:h.text}]}});
+    var parts=[{text:prompt||"Опиши вкладення"}];
+    media.forEach(function(x){parts.push({inline_data:{mime_type:x.mime,data:x.data}})});
+    contents.push({role:"user",parts:parts});
+    r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+m.id+":generateContent",{method:"POST",signal:ABORT?ABORT.signal:undefined,headers:{"Content-Type":"application/json","x-goog-api-key":K.gemini},body:JSON.stringify({systemInstruction:{parts:[{text:sys||CURSYS}]},contents:contents,generationConfig:{maxOutputTokens:m.maxOut}})});
+    d=await r.json().catch(function(){return {}});
+    if(!r.ok)throw {status:r.status,msg:(d.error&&d.error.message)||""};
+    var ps=(d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts)||[];
+    return {text:ps.map(function(p){return p.text||""}).join(""),tok:(d.usageMetadata&&d.usageMetadata.totalTokenCount)||0,cut:!!(d.candidates&&d.candidates[0]&&d.candidates[0].finishReason==="MAX_TOKENS")};
+  }
+  var msgs=hist.map(function(h){return {role:h.role,content:h.text}});
+  msgs.unshift({role:"system",content:sys||CURSYS});msgs.push({role:"user",content:prompt});
+  r=await fetch(OAI[m.p],{method:"POST",signal:ABORT?ABORT.signal:undefined,headers:{"Content-Type":"application/json","Authorization":"Bearer "+K[m.p]},body:JSON.stringify({model:m.id,messages:msgs,max_tokens:m.maxOut})});
+  d=await r.json().catch(function(){return {}});
+  if(!r.ok)throw {status:r.status,msg:(d.error&&d.error.message)||""};
+  return {text:(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||"",tok:(d.usage&&d.usage.total_tokens)||0,cut:!!(d.choices&&d.choices[0]&&d.choices[0].finish_reason==="length")};
+}
+function errText(e,m){
+  if(e.status===400||e.status===401||e.status===403)return "Ключ "+m.pn+" не підійшов або немає доступу. Перевір його в налаштуваннях"+(e.msg?" ("+e.msg.slice(0,90)+")":"");
+  if(e.status===429)return "Ліміти вичерпано в усіх доступних моделей. Спробуй пізніше";
+  if(!e.status)return "Немає зв’язку з "+m.pn+". Перевір інтернет";
+  return "Помилка "+e.status+(e.msg?": "+e.msg.slice(0,120):"");
+}
+async function send(text,auto){if(!auto)FIXN=0;
+  if(busy)return;
+  if(REC){try{REC.abort()}catch(e){}}
+  var t=(text||$("#inp").value).trim();if(!t&&!P.length)return;
+  if(!Object.keys(K).length){showKeys();return}
+  var c=cur(),atts=P.slice();var pp=proj(c.projectId);CURSYS=SYS+(S.set.about?"\nПро користувача: "+S.set.about:"")+(pp&&pp.desc?"\nПроєкт: "+pp.name+". "+pp.desc:"")+(pp&&pp.instructions?"\nІнструкції проєкту: "+pp.instructions:"");P=[];renderPend();
+  $("#inp").value="";$("#inp").style.height="auto";st("yd_"+c.id,"");
+  c.msgs.push({r:"u",t:t,a:atts.map(function(x){return {n:x.n,u:x.u}})});
+  if(c.title==="Новий чат"&&t)c.title=t.slice(0,32);c.updated=Date.now();if(pp)pp.updated=c.updated;
+  renderFeed();renderSide();
+  var ty=document.createElement("div");ty.className="ai";
+  ty.innerHTML='<div class="av"><svg class="logo"><use href="#logo"/></svg></div><div class="dotsT"><b></b><b></b><b></b></div>';
+  $("#col").appendChild(ty);$("#feed").scrollTop=1e9;setBusy(true);STOP=false;ABORT=window.AbortController?new AbortController():null;
+  var extra="",media=[];
+  try{
+    try{if(pp&&pp.files.length){var fx="",lim=80000;for(var fi=0;fi<pp.files.length&&lim>0;fi++){var tx=await fget(pp.files[fi].id);if(tx){tx=tx.slice(0,lim);lim-=tx.length;fx+="\n\n[Файл проєкту: "+pp.files[fi].name+"]\n"+tx}}if(fx)CURSYS+="\nФайли проєкту (контекст):"+fx}}catch(e){}
+    try{var fpr=c.projectId||"",fl=S.fs.filter(function(x){return (x.proj||"")===fpr&&x.t==="f"});
+      CURSYS+="\nДерево файлів "+(pp?"проєкту":"користувача")+":\n"+(fl.length?fl.map(function(x){return "- "+pathOf(x)+" ("+(x.bin?"бінарний":x.size+" симв.")+")"}).join("\n"):"(файлів ще немає)")+"\n"+FMT;
+      var mt=t.match(/@[^\s@]+/g)||[],seen={};for(var mi=0;mi<mt.length;mi++){var qn=mt[mi].slice(1).toLowerCase(),ff=fl.filter(function(x){return !x.bin&&(x.name.toLowerCase()===qn||pathOf(x).toLowerCase()===qn)})[0];if(ff&&!seen[ff.id]){seen[ff.id]=1;CURSYS+="\n\n[Вміст @"+pathOf(ff)+"]\n"+(await getText(ff)).slice(0,30000)}}}catch(e){}
+    for(var k=0;k<atts.length;k++){
+      var f=atts[k].f;if(!f)continue;
+      if(/^image\//.test(f.type)||f.type==="application/pdf")media.push({mime:f.type,data:await b64(f)});
+      else if(isText(f))extra+="\n\n[Файл: "+f.name+"]\n"+(await f.text()).slice(0,30000);
+      else toast("Формат файлу "+f.name+" поки не підтримується");
+    }
+  }catch(e){}
+  var vis=media.length>0,hist=history(c),list=[],n=MODELS.length;
+  var ord=orderIdx(),st0=Math.max(0,ord.indexOf(S.model));for(var q=0;q<ord.length;q++){var j=ord[(st0+q)%ord.length];if(usable(j,vis))list.push(j);if(!S.auto)break}
+  var res=null,lastErr=null,lastM=MODELS[S.model];
+  if(!list.length)lastErr={status:429};
+  var codeJob=!vis&&isCodeReq(t,typeof fl==="undefined"?null:fl);if(codeJob){try{res=await codeChain(c,t,extra,hist)}catch(e){res=null}stat("",false)}
+  for(var z=0;!res&&!STOP&&z<list.length;z++){
+    var mi=list[z],m=MODELS[mi];lastM=m;
+    try{res=await call(m,hist,t+extra,media);res.j=mi;break}
+    catch(e){
+      lastErr=e;if(STOP||(e&&e.name==="AbortError")){lastErr={aborted:true};break}
+      if(e.status===429||e.status===404||e.status>=500){
+        var uu=U(mi);if(e.status===404||(e.status===429&&/per ?day|daily/i.test(e.msg||"")))uu.off=true;else if(e.status===429){uu.n=(uu.n||0)+1;uu.until=Date.now()+60000*Math.min(uu.n,30)}
+        if(z<list.length-1){
+          var why=e.status===429?"Ліміт "+m.n+" вичерпано":e.status===404?"Модель "+m.n+" недоступна":m.n+" не відповідає";
+          c.msgs.push({r:"n",t:why+". Чат продовжує "+MODELS[list[z+1]].n});
+        }
+        continue;
+      }
+      break;
+    }
+  }
+  if(res){
+    S.model=res.j;var u=U(res.j);u.req++;u.tok+=res.tok;u.n=0;u.until=0;
+    c.updated=Date.now();c.msgs.push({r:"a",t:res.text||"Модель повернула порожню відповідь. Спробуй переформулювати.",m:MODELS[res.j].n});
+  }else if(STOP||(lastErr&&lastErr.aborted)){
+    c.msgs.push({r:"n",t:"⏹ Зупинено"});
+  }else{
+    c.msgs.push({r:"n",t:errText(lastErr||{},lastM)});
+  }
+  STOP=false;ABORT=null;setBusy(false);save();renderFeed();renderModel();if(res)postReply(c.msgs[c.msgs.length-1]);
+}
+function files(inp){
+  inp.onchange=function(){
+    [].forEach.call(inp.files,function(f){P.push({n:f.name,f:f,u:f.type.indexOf("image")===0?URL.createObjectURL(f):""})});
+    inp.value="";renderPend();
+  };
+}
+function setTheme(t){
+  document.documentElement.setAttribute("data-theme",t);
+  [].forEach.call($("#theme").children,function(b){b.classList.toggle("on",b.dataset.t===t)});st("l2theme",t);
+}
+function setAcc(c){
+  document.documentElement.style.removeProperty("--ac");
+  [].forEach.call($("#cols").children,function(b,i){b.classList.toggle("on",ACC[i]===c)});st("l2acc",c);
+}
+function newChat(){
+  var c=cur();if(!c.msgs.length){closeSheets();return}
+  var n=fresh();S.chats.push(n);S.cur=n.id;save();closeSheets();renderAll();
+}
+var PROV=[{k:"gemini",n:"Gemini",u:"https://aistudio.google.com/apikey",ph:"Ключ з Google AI Studio"},{k:"groq",n:"Groq",u:"https://console.groq.com/keys",ph:"gsk_..."},{k:"openrouter",n:"OpenRouter",u:"https://openrouter.ai/keys",ph:"sk-or-..."},{k:"cerebras",n:"Cerebras",u:"https://cloud.cerebras.ai/platform/",ph:"csk-..."},{k:"mistral",n:"Mistral",u:"https://console.mistral.ai/api-keys",ph:"Ключ Mistral"}];
+var OAI={groq:"https://api.groq.com/openai/v1/chat/completions",openrouter:"https://openrouter.ai/api/v1/chat/completions",cerebras:"https://api.cerebras.ai/v1/chat/completions",mistral:"https://api.mistral.ai/v1/chat/completions"};
+$("#kList").innerHTML=PROV.map(function(p){return '<label for="k_'+p.k+'">Ключ '+p.n+' <a href="'+p.u+'" target="_blank" rel="noopener">де взяти</a></label><input id="k_'+p.k+'" data-k="'+p.k+'" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="'+p.ph+'">'}).join("");
+$("#kList").oninput=function(e){var k=e.target.dataset.k;if(!k)return;var v=e.target.value.trim();if(v)K[k]=v;else delete K[k];st("yumi_keys",JSON.stringify(K));$("#kHint").textContent="Збережено автоматично";$("#kSkip").style.display=Object.keys(K).length?"block":"none"};
+function showKeys(){
+  closeSheets();
+  PROV.forEach(function(p){$("#k_"+p.k).value=K[p.k]||""});$("#kHint").textContent="";
+  $("#kSkip").style.display=Object.keys(K).length?"block":"none";
+  $("#keyModal").classList.add("show");
+}
+$("#kGo").onclick=function(){
+  if(!Object.keys(K).length){$("#kHint").textContent="Вставте хоча б один ключ.";return}
+  MODELS.forEach(function(m,i){if(S.model!==i&&!hasKey(S.model)&&hasKey(i))S.model=i});
+  $("#keyModal").classList.remove("show");save();renderAll();toast("Ключі збережено");
+};
+$("#kSkip").onclick=function(){$("#keyModal").classList.remove("show")};
+$("#kDel").onclick=function(){K={};st("yumi_keys","{}");PROV.forEach(function(p){$("#k_"+p.k).value=""});$("#kSkip").style.display="none";$("#kHint").textContent="Ключі видалено з цього пристрою.";renderAll()};
+function exportAll(){var F={},ps=[];S.projects.forEach(function(p){p.files.forEach(function(f){ps.push(fget(f.id).then(function(t){F[f.id]=t}))})});S.fs.forEach(function(n){if(n.t==="f"&&!n.bin)ps.push(fget("c:"+n.id).then(function(t){F["c:"+n.id]=t}))});
+  Promise.all(ps).then(function(){dl("yumi-backup-"+today()+".json",JSON.stringify({v:2,S:S,K:K,F:F}))}).catch(function(){dl("yumi-backup-"+today()+".json",JSON.stringify({v:2,S:S,K:K}))})}
+$("#kExp").onclick=exportAll;
+$("#kImpB").onclick=function(){$("#kImp").click()};
+$("#kImp").onchange=function(){var f=this.files[0];this.value="";if(!f)return;
+  f.text().then(function(t){try{var d=JSON.parse(t);if(!d.S||!d.S.chats||!d.S.chats.length)throw 0;S=d.S;migrate();K=d.K||{};if(d.F)Object.keys(d.F).forEach(function(k){fput(k,d.F[k])});st("yumi_keys",JSON.stringify(K));save();$("#keyModal").classList.remove("show");renderAll();toast("Чати й ключі відновлено")}catch(e){toast("Це не файл копії YUMI")}})};
+$("#keysBtn").onclick=showKeys;
+$("#cols").innerHTML=ACC.map(function(c){return '<button style="background:'+c+'" aria-label="Колір"></button>'}).join("");
+$("#cols").onclick=function(e){var b=e.target.closest("button");if(b)setAcc(ACC[[].indexOf.call(this.children,b)])};
+$("#theme").onclick=function(e){var b=e.target.closest("button");if(b)setTheme(b.dataset.t)};
+$("#menuBtn").onclick=function(){$("#side").classList.add("open");$("#scrim").classList.add("show")};
+$("#scrim").onclick=closeSheets;
+$("#newBtn").onclick=$("#newTop").onclick=newChat;
+$("#openSet").onclick=function(){fillSet();openSheet("setSheet")};
+$("#mp").onclick=function(){openSheet("modelSheet")};
+$("#plus").onclick=function(){openSheet("plusSheet")};
+var REC=null;
+function setBusy(v){busy=v;var b=$("#send");if(!b)return;b.innerHTML='<svg class="i"><use href="#'+(v?"i-stop":"i-send")+'"/></svg>';b.setAttribute("aria-label",v?"Зупинити":"Надіслати")}
+function stopAll(){STOP=true;try{ABORT&&ABORT.abort()}catch(e){}toast("Зупиняю…")}
+$("#mic").onclick=function(){var SR=window.SpeechRecognition||window.webkitSpeechRecognition,mic=$("#mic"),inp=$("#inp");
+  if(REC){try{REC.stop()}catch(e){}return}
+  if(!SR){toast("Голосовий ввід не підтримується в цьому браузері. Відкрийте YUMI в Chrome");return}
+  if(!window.isSecureContext){toast("Мікрофон працює лише на сторінці з https");return}
+  try{if(window.speechSynthesis){speechSynthesis.cancel();SPKT++;SPK=false;spkReset()}}catch(e){}
+  var r=new SR(),base=inp.value.replace(/\s+$/,""),got=false,live=false,err=false,wd;REC=r;
+  r.lang="uk-UA";r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
+  function ui(on){mic.classList.toggle("rec",on);mic.setAttribute("aria-label",on?"Зупинити запис":"Голос")}
+  r.onstart=function(){live=true;clearTimeout(wd);ui(true)};
+  r.onresult=function(e){got=true;var t="";for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;inp.value=base+(base?" ":"")+t.trim();inp.dispatchEvent(new Event("input"));inp.scrollTop=inp.scrollHeight};
+  r.onerror=function(e){err=true;var m={"not-allowed":"Немає доступу до мікрофона. Дозвольте його в налаштуваннях сайту","service-not-allowed":"Голосовий сервіс заблоковано в цьому браузері","no-speech":"Мову не почуто. Спробуйте ще раз","audio-capture":"Мікрофон не знайдено або він зайнятий іншим застосунком","network":"Немає звʼязку з сервісом розпізнавання","language-not-supported":"Українська мова не підтримується"}[e.error];if(e.error!=="aborted")toast(m||"Голос не вдалося розпізнати")};
+  r.onend=function(){clearTimeout(wd);if(REC===r)REC=null;ui(false);if(live&&!got&&!err)toast("Мову не почуто. Спробуйте ще раз")};
+  wd=setTimeout(function(){if(!live){err=true;try{r.abort()}catch(e){}toast("Розпізнавання не запустилося. Дозвольте мікрофон і відкрийте YUMI в Chrome")}},12000);
+  try{r.start()}catch(x){REC=null;clearTimeout(wd);toast("Не вдалося запустити запис")}};
+$("#send").onclick=function(){if(busy){stopAll();return}send()};
+$("#autoTg").onclick=function(){S.auto=!S.auto;save();renderModel()};
+$("#openUse").onclick=function(){renderUsage();openSheet("useSheet")};
+$("#simBtn").onclick=function(){var m=MODELS[S.model],u=U(S.model);u.off=true;save();renderUsage();renderModel();toast("Ліміт "+m.n+" умовно вичерпано")};
+$("#inp").oninput=function(){this.style.height="auto";this.style.height=this.scrollHeight+"px";st("yd_"+S.cur,this.value)};
+$("#cq").oninput=renderSide;
+$("#inp").onkeydown=function(e){if(e.key==="Enter"&&!e.shiftKey&&window.innerWidth>=900){e.preventDefault();send()}};
+document.querySelectorAll("[data-soon]").forEach(function(b){b.onclick=function(){toast(b.dataset.soon)}});
+document.querySelectorAll("#plusSheet .opt").forEach(function(b){b.onclick=function(){
+  var a=b.dataset.a;closeSheets();
+  if(a==="photo")$("#fPhoto").click();else if(a==="cam")$("#fCam").click();else if(a==="file")$("#fFile").click();
+  else if(a==="gen")toast("Створення зображень підключимо наступним кроком");
+  else{$("#inp").value="Напиши код: ";$("#inp").focus()}
+}});
+files($("#fPhoto"));files($("#fCam"));files($("#fFile"));
+
+function orderIdx(){var o=[];(S.set.order||[]).forEach(function(id){var i=MODELS.findIndex(function(m){return m.id===id});if(i>=0&&o.indexOf(i)<0)o.push(i)});MODELS.forEach(function(m,i){if(o.indexOf(i)<0)o.push(i)});return o}
+function isCode(i){var v=S.set.code[MODELS[i].id];return v===undefined?MODELS[i].tags.indexOf("code")>=0:v}
+function modSet(){var s=$("#dynSheet");s.innerHTML='<h2>Моделі</h2><p class="note" style="margin:0 6px 10px">Порядок: від кращої для коду до гіршої. Автоперемикання йде по цьому списку.</p>';
+  var o=orderIdx();
+  function mv(p,d){var q=p+d;if(q<0||q>=o.length)return;var t=o[p];o[p]=o[q];o[q]=t;S.set.order=o.map(function(i){return MODELS[i].id});save();modSet()}
+  o.forEach(function(i,pos){var m=MODELS[i],dis=S.set.dis.indexOf(m.id)>=0,w=document.createElement("div");w.className="mr";
+    w.innerHTML='<div style="padding:4px 6px;opacity:'+(dis?.45:1)+'"><b></b><small style="display:block;color:var(--mut);font-size:13px"></small></div><div class="acts"></div>';
+    w.querySelector("b").textContent=(pos+1)+". "+m.n;w.querySelector("small").textContent=m.pn+" · якість коду "+m.q+"/10 · "+m.tags.join(", ")+" · відповідь до "+fmt(m.maxOut)+" ток.";
+    var a=w.querySelector(".acts");
+    [["Вгору",function(){mv(pos,-1)},0],["Вниз",function(){mv(pos,1)},0],[dis?"Вимкнено":"Увімкнено",function(){if(dis)S.set.dis=S.set.dis.filter(function(x){return x!==m.id});else S.set.dis.push(m.id);save();renderModel();modSet()},!dis],[isCode(i)?"Код: так":"Код: ні",function(){S.set.code[m.id]=!isCode(i);save();modSet()},isCode(i)]].forEach(function(x){var b=document.createElement("button");b.textContent=x[0];if(x[2])b.className="on";b.onclick=x[1];a.appendChild(b)});
+    s.appendChild(w)});
+  openSheet("dynSheet")}
+function applyPrefs(){document.documentElement.style.setProperty("--fs",S.set.fs+"px");try{window.speechSynthesis&&speechSynthesis.getVoices()}catch(e){}}
+function fillVoices(){var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[],sel=$("#vSel");sel.innerHTML='<option value="">Авто (українська)</option>';
+  vs.filter(function(v){return /^uk/i.test(v.lang)}).concat(vs.filter(function(v){return !/^uk/i.test(v.lang)})).forEach(function(v){var o=document.createElement("option");o.value=v.name;o.textContent=v.name+" ("+v.lang+")";sel.appendChild(o)});sel.value=S.set.voice}
+function fillSet(){$("#hLen").value=S.set.hist;$("#ecoTg").setAttribute("aria-checked",S.set.eco);$("#aboutT").value=S.set.about;$("#vRate").value=S.set.rate;fillVoices();[].forEach.call($("#fsz").children,function(b){b.classList.toggle("on",+b.dataset.f===S.set.fs)})}
+$("#modBtn").onclick=modSet;
+$("#fsz").onclick=function(e){var b=e.target.closest("button");if(!b)return;S.set.fs=+b.dataset.f;applyPrefs();save();fillSet()};
+$("#vSel").onchange=function(){S.set.voice=this.value;save()};
+$("#vRate").oninput=function(){S.set.rate=+this.value;save()};
+$("#hLen").onchange=function(){var n=Math.round(+this.value)||6;S.set.hist=Math.min(20,Math.max(1,n));this.value=S.set.hist;save()};
+$("#ecoTg").onclick=function(){S.set.eco=!S.set.eco;this.setAttribute("aria-checked",S.set.eco);save()};
+$("#aboutT").oninput=function(){S.set.about=this.value.slice(0,2000);save()};
+$("#backupBtn").onclick=exportAll;
+$("#restoreBtn").onclick=function(){$("#kImp").click()};
+$("#clearBtn").onclick=function(){if(!confirm("Видалити ВСІ чати та проєкти? Ключі й налаштування залишаться."))return;S.projects.forEach(function(p){p.files.forEach(function(f){fdel(f.id)})});var c=fresh();S.chats=[c];S.cur=c.id;S.projects=[];PV=null;save();closeSheets();renderAll();toast("Дані очищено")};
+$("#fPF").onchange=function(){var p=proj(PV);if(!p)return;var fl=[].slice.call(this.files);this.value="";
+  fl.reduce(function(pr,f){return pr.then(function(){if(!isText(f)){toast(f.name+": підтримуються лише текстові файли");return}if(f.size>300000){toast(f.name+": більше 300 КБ");return}
+    return f.text().then(function(t){var id=uid();return fput(id,t).then(function(){p.files.push({id:id,name:f.name,size:f.size,tok:Math.ceil(t.length/3)});p.updated=Date.now()})})})},Promise.resolve())
+  .then(function(){save();renderProj()}).catch(function(){toast("Не вдалося зберегти файл")})};
+function pwaInit(){try{var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#000000"/><g fill="none" stroke="#f5f5f5" stroke-width="2.4" stroke-linecap="round"><circle cx="16" cy="16" r="9" opacity=".35"/><path d="M16 7a9 9 0 0 1 7.8 4.5"/></g><circle cx="23.8" cy="11.5" r="2.4" fill="#f5f5f5"/></svg>',ic="data:image/svg+xml,"+encodeURIComponent(svg),
+  mf={name:"YUMI",short_name:"YUMI",display:"standalone",background_color:"#000000",theme_color:"#000000",start_url:".",icons:[{src:ic,sizes:"any",type:"image/svg+xml",purpose:"any"}]},
+  l=document.createElement("link");l.rel="manifest";l.href="data:application/manifest+json,"+encodeURIComponent(JSON.stringify(mf));document.head.appendChild(l);
+  var a=document.createElement("link");a.rel="apple-touch-icon";a.href=ic;document.head.appendChild(a)}catch(e){}}
+// ===== Етап 2: файли, редактор, артефакти =====
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var CS="",CF=null,EN=null,EBASE="",EH=[],EP=0,ET=0,ENC=new TextEncoder();
+function fnode(id){return S.fs.filter(function(n){return n.id===id})[0]}
+function pathOf(n){var a=[n.name];while(n.par){n=fnode(n.par);if(!n)break;a.unshift(n.name)}return a.join("/")}
+function fsFind(pr,p){var par=null,n=null,ps=p.split("/").filter(Boolean);for(var i=0;i<ps.length;i++){n=S.fs.filter(function(x){return (x.proj||"")===pr&&(x.par||null)===par&&x.name===ps[i]})[0];if(!n)return null;par=n.id}return n}
+function uniq(pr,par,nm){var ex=function(x){return S.fs.some(function(n){return (n.proj||"")===pr&&(n.par||null)===par&&n.name===x})};if(!ex(nm))return nm;var m=nm.match(/^(.*?)(\.[^.]*)?$/),b=m[1],e=m[2]||"",k=2;while(ex(b+" "+k+e))k++;return b+" "+k+e}
+function ensureDir(pr,par,nm){var d=S.fs.filter(function(x){return (x.proj||"")===pr&&(x.par||null)===par&&x.name===nm&&x.t==="d"})[0];if(!d){d={id:uid(),name:nm,par:par,t:"d",proj:pr,u:Date.now()};S.fs.push(d)}return d.id}
+async function mkFile(pr,par,nm,text,bin,mime){nm=uniq(pr,par,nm);var n={id:uid(),name:nm,par:par,t:"f",proj:pr,size:bin?text.byteLength:text.length,u:Date.now()};if(bin){n.bin=1;n.mime=mime||""}S.fs.push(n);await fput("c:"+n.id,text);save();return n}
+async function mkPath(pr,p,text){var ps=p.split("/").filter(Boolean),par=null;for(var i=0;i<ps.length-1;i++)par=ensureDir(pr,par,ps[i]);return mkFile(pr,par,ps[ps.length-1],text)}
+async function getText(n){var v=await fget("c:"+n.id);return typeof v==="string"?v:""}
+async function getBytes(n){var v=await fget("c:"+n.id);return n.bin?new Uint8Array(v):ENC.encode(v||"")}
+async function verPush(n,old){var vs=(await fget("v:"+n.id))||[];vs.push({t:Date.now(),x:old});if(vs.length>20)vs.shift();await fput("v:"+n.id,vs)}
+async function setText(n,t,q){if(!q){var o=await getText(n);if(o!==t)await verPush(n,o)}await fput("c:"+n.id,t);n.size=t.length;n.u=Date.now();save()}
+function kidsOf(n){return S.fs.filter(function(x){return x.par===n.id})}
+function allDesc(n){var r=[n];kidsOf(n).forEach(function(k){r=r.concat(allDesc(k))});return r}
+function removeNode(n){if(!confirm("Видалити «"+n.name+"»"+(n.t==="d"?" з усім вмістом":"")+"?"))return;var ids=allDesc(n).map(function(x){return x.id});ids.forEach(function(id){fdel("c:"+id);fdel("v:"+id)});S.fs=S.fs.filter(function(x){return ids.indexOf(x.id)<0});S.arts=S.arts.filter(function(a){return ids.indexOf(a.nid)<0});save();renderCode()}
+function dlb(name,blob){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();toast("Збережено: "+name)}
+var CRCT=(function(){var t=[],c,n,k;for(n=0;n<256;n++){c=n;for(k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc(b){var c=-1;for(var i=0;i<b.length;i++)c=CRCT[(c^b[i])&255]^(c>>>8);return (c^-1)>>>0}
+function zip(fl){var parts=[],cd=[],off=0,cs=0;
+  fl.forEach(function(f){var nm=ENC.encode(f.n),d=f.d,cr=crc(d),h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(12,0x21,true);h.setUint32(14,cr,true);h.setUint32(18,d.length,true);h.setUint32(22,d.length,true);h.setUint16(26,nm.length,true);
+    parts.push(h.buffer,nm,d);
+    var c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(14,0x21,true);c.setUint32(16,cr,true);c.setUint32(20,d.length,true);c.setUint32(24,d.length,true);c.setUint16(28,nm.length,true);c.setUint32(42,off,true);
+    cd.push(c.buffer,nm);cs+=46+nm.length;off+=30+nm.length+d.length});
+  var e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,fl.length,true);e.setUint16(10,fl.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  return new Blob(parts.concat(cd,[e.buffer]),{type:"application/zip"})}
+async function exportNode(n){if(n.t==="f"){dlb(n.name,n.bin?new Blob([await fget("c:"+n.id)],{type:n.mime}):new Blob([await getText(n)],{type:"text/plain;charset=utf-8"}));return}
+  var base=pathOf(n).length-n.name.length,fl=[],ds=allDesc(n).filter(function(x){return x.t==="f"});for(var i=0;i<ds.length;i++)fl.push({n:pathOf(ds[i]).slice(base),d:await getBytes(ds[i])});
+  if(!fl.length){toast("Папка порожня");return}dlb(n.name+".zip",zip(fl))}
+// diff
+function diffL(a,b){var A=a.split("\n"),B=b.split("\n"),n=A.length,m=B.length,o=[],i,j;if(n*m>4e6)return [{k:"-",t:"(файл завеликий для порівняння)"}];
+  var T=[];for(i=0;i<=n;i++)T.push(new Uint16Array(m+1));for(i=n-1;i>=0;i--)for(j=m-1;j>=0;j--)T[i][j]=A[i]===B[j]?T[i+1][j+1]+1:Math.max(T[i+1][j],T[i][j+1]);
+  i=0;j=0;while(i<n&&j<m){if(A[i]===B[j]){o.push({k:" ",t:A[i]});i++;j++}else if(T[i+1][j]>=T[i][j+1])o.push({k:"-",t:A[i++]});else o.push({k:"+",t:B[j++]})}
+  while(i<n)o.push({k:"-",t:A[i++]});while(j<m)o.push({k:"+",t:B[j++]});return o}
+function diffEl(a,b){var o=diffL(a,b),w=document.createElement("div");w.className="dl2";
+  var show=o.map(function(x,i){if(x.k!==" ")return 1;for(var j=Math.max(0,i-2);j<=Math.min(o.length-1,i+2);j++)if(o[j].k!==" ")return 1;return 0}),gap=false;
+  o.forEach(function(x,i){if(!show[i]){if(!gap){var g=document.createElement("div");g.textContent="…";g.style.color="var(--mut)";w.appendChild(g);gap=true}return}gap=false;var l=document.createElement("div");l.textContent=x.k+" "+x.t;if(x.k==="+")l.style.background="rgba(63,184,100,.22)";if(x.k==="-")l.style.background="rgba(232,80,80,.22)";w.appendChild(l)});
+  if(!o.some(function(x){return x.k!==" "}))w.textContent="Без змін";return w}
+// SEARCH/REPLACE
+function applyEd(tx,e){if(!e[0].trim())return null;var i=tx.indexOf(e[0]);if(i>=0)return tx.slice(0,i)+e[1]+tx.slice(i+e[0].length);
+  var L=tx.split("\n"),Q=e[0].split("\n").map(function(x){return x.trim()}),k,j;for(k=0;k+Q.length<=L.length;k++){for(j=0;j<Q.length;j++)if(L[k+j].trim()!==Q[j])break;if(j===Q.length)return L.slice(0,k).concat(e[1].split("\n"),L.slice(k+Q.length)).join("\n")}return null}
+async function applyOps(m){var c=cur(),pr=c.projectId||"",P=parseOps(m.t),made=0,chg=0,fails=[];
+  for(var i=0;i<P.ops.length;i++){var o=P.ops[i],n=fsFind(pr,o.p);
+    if(o.k==="f"){if(n&&!n.bin){await setText(n,o.b);chg++}else if(!n){var nn=await mkPath(pr,o.p,o.b);made++;if(/\.(html?|svg)$/i.test(o.p))addArt(nn)}}
+    else{if(!n){fails.push(o.p+": файлу немає");continue}var tx=await getText(n),ok=true;o.ed.forEach(function(e){var r=applyEd(tx,e);if(r===null)ok=false;else tx=r});if(!ok){fails.push(o.p+": фрагмент не знайдено");continue}await setText(n,tx);chg++}}
+  if(made||chg){m.ap="y";m.cnt=[made,chg]}save();renderFeed();
+  if(fails.length){toast("Не застосовано: "+fails.join("; "));if(FIXN<2){FIXN++;send("Правка не збіглася з текстом: "+fails.join("; ")+". Зроби EDIT ще раз, дослівно копіюючи фрагмент SEARCH із файлу "+P.ops.map(function(o){return "@"+o.p}).join(" ")+".",true)}}}
+function postReply(m){if(parseOps(m.t).bad&&FIXN<1){FIXN++;send("Формат невалідний. Використовуй лише <<<FILE шлях>>> вміст <<<END>>> або <<<EDIT шлях>>> з блоками <<<<<<< SEARCH / ======= / >>>>>>> REPLACE і <<<END>>>. Надішли ще раз.",true)}}
+async function viewOps(P,pr){var s=$("#dynSheet");s.innerHTML="<h2>Різниця</h2>";
+  for(var i=0;i<P.ops.length;i++){var o=P.ops[i],n=fsFind(pr,o.p),old=n&&!n.bin?await getText(n):"",nw;if(o.k==="f")nw=o.b;else{nw=old;o.ed.forEach(function(e){var r=applyEd(nw,e);if(r!==null)nw=r})}
+    var h=document.createElement("h3");h.textContent=o.p+(n?"":" (новий)");s.appendChild(h);s.appendChild(diffEl(old,nw))}openSheet("dynSheet")}
+function opsCard(P,m){var d=document.createElement("div");d.className="chg";var pr=cur().projectId||"",nc=0,nu=0;
+  P.ops.forEach(function(o){if(o.k==="f"&&!fsFind(pr,o.p))nc++;else nu++});if(m.cnt){nc=m.cnt[0];nu=m.cnt[1]}
+  d.innerHTML='<b></b><small></small><div class="acts"></div>';d.querySelector("b").textContent="Створено "+nc+", змінено "+nu;
+  var sm=d.querySelector("small");sm.textContent=P.ops.map(function(o){return o.p}).join(", ")+(P.bad?" · формат невалідний":"");
+  var a=d.lastChild;function B(t,f){var b=document.createElement("button");b.textContent=t;b.onclick=f;a.appendChild(b)}
+  B("Різниця",function(){viewOps(P,pr)});var we=m.t.match(/Перевірка запуском: ([^\n]*)/);if(we)B("Виправити",function(){if(!busy)send("Виправ помилки, знайдені перевіркою запуску: "+we[1]+". Використай правки EDIT.",true)});
+  if(m.ap==="y"){sm.textContent+=" · застосовано";B("Відкрити в Коді",function(){CS=pr;CF=null;tab("code")})}
+  else if(m.ap==="n")sm.textContent+=" · відхилено";
+  else if(!P.bad){B("Застосувати",function(){applyOps(m)});B("Відхилити",function(){m.ap="n";save();renderFeed()})}
+  return d}
+function codeCard(lg,cd){var d=document.createElement("div");d.className="cc";var ext=EXT[lg]||"txt";
+  d.innerHTML='<b></b><small></small><div class="acts"></div>';d.querySelector("b").textContent="код."+ext;d.querySelector("small").textContent=cd.split("\n").length+" рядків";var a=d.lastChild,o=document.createElement("button");
+  o.textContent="Відкрити в Коді";o.onclick=async function(){var pr=cur().projectId||"",n=await mkFile(pr,null,"код."+ext,cd);if(ext==="html"||ext==="svg")addArt(n);CS=pr;CF=null;tab("code");openEd(n)};a.appendChild(o);var cb2=document.createElement("button");cb2.innerHTML=ico("cp")+"Копіювати";cb2.onclick=function(){copyT(cd)};a.appendChild(cb2);
+  if(lg==="html"||lg==="svg"){var r=document.createElement("button");r.innerHTML=ico("play")+"Запустити";r.onclick=function(){runArt(lg,cd)};a.appendChild(r)}return d}
+// запуск
+function resolve(n,h){var ps=h.split("/").filter(function(x){return x&&x!=="."}),par=n.par||null,f=null;
+  for(var i=0;i<ps.length;i++){var p=ps[i];if(p===".."){var d=par&&fnode(par);par=d?(d.par||null):null;continue}var last=i===ps.length-1;
+    f=S.fs.filter(function(x){return (x.proj||"")===(n.proj||"")&&(x.par||null)===par&&x.name===p&&x.t===(last?"f":"d")})[0];if(!f)return null;if(!last)par=f.id}return f}
+async function runFile(n){if(EN&&n===EN)await commitVer();var ext=(n.name.split(".").pop()||"").toLowerCase(),t=await getText(n);
+  if(ext==="svg"){runArt("svg",t);return}if(!/^html?$/.test(ext)){toast("Запуск лише для HTML і SVG");return}
+  var css=/<link[^>]*href=["']([^"']+\.css)["'][^>]*>/gi,js=/<script([^>]*)src=["']([^"']+\.js)["']([^>]*)>\s*<\/script>/gi,jobs=[];
+  t.replace(css,function(a,h){jobs.push(h);return a});t.replace(js,function(a,x,h){jobs.push(h);return a});
+  var M={};for(var i=0;i<jobs.length;i++){var f=resolve(n,jobs[i]);if(f)M[jobs[i]]=await getText(f)}
+  t=t.replace(css,function(a,h){return M[h]!==undefined?"<style>"+M[h]+"</style>":a}).replace(js,function(a,x,h){return M[h]!==undefined?"<scr"+"ipt>"+M[h].replace(/<\/script/gi,"<\\/script")+"</scr"+"ipt>":a});
+  runArt("html",t)}
+// редактор
+function gutter(){var c=$("#edT").value.split("\n").length,s="";for(var i=1;i<=c;i++)s+=i+"\n";$("#gut").textContent=s}
+function setVal(v){$("#edT").value=v;gutter();EH=[v];EP=0}
+async function openEd(n){var t=await getText(n);EN=n;EBASE=t;setVal(t);$("#edN").textContent=pathOf(n);$("#fb").classList.remove("show");$("#ed").classList.add("show")}
+async function commitVer(){if(!EN)return;var v=$("#edT").value;if(v!==EBASE){await verPush(EN,EBASE);EBASE=v}await setText(EN,v,1)}
+function snap(){var v=$("#edT").value;if(EH[EP]===v)return;EH=EH.slice(0,EP+1);EH.push(v);if(EH.length>100)EH.shift();EP=EH.length-1}
+function hist(d){snap();var q=EP+d;if(q<0||q>=EH.length)return;EP=q;$("#edT").value=EH[q];gutter();clearTimeout(ET);ET=setTimeout(function(){EN&&setText(EN,$("#edT").value,1)},500)}
+$("#edT").oninput=function(){gutter();clearTimeout(ET);var h=this;ET=setTimeout(function(){snap();EN&&setText(EN,h.value,1)},700)};
+$("#edT").onscroll=function(){$("#gut").scrollTop=this.scrollTop};
+$("#edT").onkeydown=function(e){if(e.key==="Tab"){e.preventDefault();this.setRangeText("  ",this.selectionStart,this.selectionEnd,"end");this.dispatchEvent(new Event("input"))}};
+$("#edX").onclick=async function(){await commitVer();$("#ed").classList.remove("show");EN=null;if(TAB==="code")renderCode()};
+$("#edU").onclick=function(){hist(-1)};$("#edR").onclick=function(){hist(1)};
+$("#edP").onclick=function(){if(EN)runFile(EN)};
+$("#edV").onclick=async function(){await commitVer();var vs=(await fget("v:"+EN.id))||[];if(!vs.length){toast("Версій ще немає");return}
+  sheet("Версії файлу",vs.slice().reverse().map(function(v){return ["code",new Date(v.t).toLocaleString("uk-UA",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})+" · "+v.x.split("\n").length+" рядків",function(){
+    sheet("Версія",[["ref","Відкотити",async function(){await verPush(EN,$("#edT").value);setVal(v.x);EBASE=v.x;await setText(EN,v.x,1);toast("Відкочено")}],["edit","Порівняти з поточною",function(){var s=$("#dynSheet");s.innerHTML="<h2>Порівняння</h2>";s.appendChild(diffEl(v.x,$("#edT").value));openSheet("dynSheet")}]])}]}))};
+$("#edF").onclick=function(){$("#fb").classList.toggle("show")};
+function fnext(){var q=$("#fFi").value;if(!q)return false;var t=$("#edT"),v=t.value,i=v.indexOf(q,t.selectionEnd);if(i<0)i=v.indexOf(q);if(i<0){toast("Не знайдено");return false}t.focus();t.setSelectionRange(i,i+q.length);t.scrollTop=Math.max(0,(v.slice(0,i).split("\n").length-3)*20);return true}
+$("#fNx").onclick=fnext;
+$("#fOne").onclick=function(){var t=$("#edT"),q=$("#fFi").value;if(q&&t.value.slice(t.selectionStart,t.selectionEnd)===q){t.setRangeText($("#fRi").value,t.selectionStart,t.selectionEnd,"end");t.dispatchEvent(new Event("input"))}fnext()};
+$("#fAll").onclick=function(){var q=$("#fFi").value,t=$("#edT");if(!q)return;var n=t.value.split(q).length-1;if(!n){toast("Не знайдено");return}t.value=t.value.split(q).join($("#fRi").value);t.dispatchEvent(new Event("input"));toast("Замінено: "+n)};
+// вкладка Код
+function newFile(){var nm=prompt("Назва файлу","index.html");if(!nm||!nm.trim())return;mkFile(CS,CF,nm.trim(),"").then(function(n){renderCode();openEd(n)})}
+function newDir(){var nm=prompt("Назва папки");if(!nm||!nm.trim())return;ensureDir(CS,CF,uniq(CS,CF,nm.trim()));save();renderCode()}
+function moveNode(n){var ds=allDesc(n).map(function(x){return x.id}),it=[["fold","Корінь",function(){n.par=null;n.name=uniq(n.proj||"",null,n.name);save();renderCode()}]];
+  S.fs.filter(function(x){return x.t==="d"&&(x.proj||"")===(n.proj||"")&&ds.indexOf(x.id)<0}).forEach(function(d){it.push(["fold",pathOf(d),function(){n.par=d.id;n.name=uniq(n.proj||"",d.id,n.name);save();renderCode()}])});sheet("Перемістити в…",it)}
+async function dupNode(n){if(n.t!=="f"){toast("Дублювання папок не підтримується");return}var v=await fget("c:"+n.id);await mkFile(n.proj||"",n.par||null,n.name,v,n.bin,n.mime);renderCode()}
+function fileMenu(n){var it=[["code","Відкрити",function(){openFile(n)}]];
+  if(/\.(html?|svg)$/i.test(n.name))it.push(["play","Запустити",function(){runFile(n)}]);
+  it.push(["edit","Перейменувати",function(){var t=prompt("Нова назва",n.name);if(t&&t.trim()){n.name=uniq(n.proj||"",n.par||null,t.trim());save();renderCode()}}],["fold","Перемістити",function(){moveNode(n)}],["cp","Дублювати",function(){dupNode(n)}],["shr",n.t==="d"?"Експорт .zip":"Експорт файлу",function(){exportNode(n)}],["puz","Зробити артефактом",function(){addArt(n);toast("Додано в «Артефакти»")}],["del","Видалити",function(){removeNode(n)}]);sheet(n.name,it)}
+async function openFile(n){if(n.t==="d"){CF=n.id;renderCode();return}
+  if(n.bin){if(/^image\//.test(n.mime)){var s=$("#dynSheet");s.innerHTML="<h2></h2>";s.firstChild.textContent=n.name;var im=document.createElement("img");im.style.cssText="max-width:100%;border-radius:12px";im.src=URL.createObjectURL(new Blob([await fget("c:"+n.id)],{type:n.mime}));s.appendChild(im);openSheet("dynSheet")}else toast("Бінарний файл: лише експорт");return}
+  openEd(n)}
+function renderCode(){var v=$("#vCode");v.innerHTML="";var h=document.createElement("div");h.className="ph";h.innerHTML='<h2>Код</h2><button class="go2">'+ico("plus")+'Додати</button>';v.appendChild(h);
+  h.lastChild.onclick=function(){sheet("Додати",[["file","Новий файл",newFile],["fold","Нова папка",newDir],["plus","Імпорт з телефону",function(){$("#fImp").click()}]])};
+  var sel=document.createElement("select");sel.className="srch";sel.innerHTML='<option value="">Загальна папка</option>'+S.projects.map(function(p){return '<option value="'+p.id+'">'+esc(p.name)+'</option>'}).join("");sel.value=CS;sel.onchange=function(){CS=sel.value;CF=null;renderCode()};v.appendChild(sel);
+  var cd=CF&&fnode(CF);if(CF&&!cd)CF=null;
+  if(cd){var up=document.createElement("button");up.className="row2";up.innerHTML='<svg class="i"><use href="#back"/></svg><span></span>';up.lastChild.textContent=pathOf(cd);up.onclick=function(){CF=cd.par||null;renderCode()};v.appendChild(up)}
+  var ks=S.fs.filter(function(n){return (n.proj||"")===CS&&(n.par||null)===CF}).sort(function(a,b){return (a.t==="f")-(b.t==="f")||a.name.localeCompare(b.name)});
+  if(!ks.length)v.insertAdjacentHTML("beforeend",'<p class="emp">Тут порожньо. Створіть файл, імпортуйте або попросіть у чаті.</p>');
+  ks.forEach(function(n){var r=document.createElement("div");r.className="pc";r.innerHTML=ico(n.t==="d"?"fold":/\.(html?|css|jsx?|tsx?|py|json|svg|md)$/i.test(n.name)?"code":"file")+'<button class="tx" style="flex:1;min-width:0"><b></b><small></small></button><button class="d ib" aria-label="Меню">'+ico("dots")+'</button>';
+    r.querySelector("b").textContent=n.name;r.querySelector("small").textContent=n.t==="d"?"Папка · "+kidsOf(n).length:(n.bin?"Бінарний · ":"")+Math.max(1,Math.round((n.size||0)/102.4)/10)+" КБ";
+    r.children[1].onclick=function(){openFile(n)};r.children[2].onclick=function(){fileMenu(n)};v.appendChild(r)})}
+$("#fImp").onchange=async function(){var fl=[].slice.call(this.files);this.value="";for(var i=0;i<fl.length;i++){var f=fl[i];if(isText(f))await mkFile(CS,CF,f.name,await f.text());else await mkFile(CS,CF,f.name,await f.arrayBuffer(),1,f.type)}renderCode();toast("Імпортовано: "+fl.length)};
+// вкладка Артефакти
+function addArt(n){if(S.arts.some(function(a){return a.nid===n.id}))return;S.arts.push({id:uid(),nid:n.id,name:n.name,created:Date.now()});save()}
+function runArtNode(a){var n=fnode(a.nid);if(!n){toast("Файл видалено");return}if(n.t==="f"){runFile(n);return}
+  var f=kidsOf(n).filter(function(x){return /\.html?$/i.test(x.name)});f=f.filter(function(x){return /^index/i.test(x.name)})[0]||f[0];if(f)runFile(f);else toast("У папці немає HTML-файлу")}
+function renderArt(){var v=$("#vArt");v.innerHTML='<div class="ph"><h2>Артефакти</h2></div>';
+  if(!S.arts.length){v.insertAdjacentHTML("beforeend",'<p class="emp"><b style="display:block;color:var(--text);font-size:17px;margin-bottom:6px">Артефактів ще немає</b>Попросіть у чаті гру чи сторінку або виберіть «Зробити артефактом» у вкладці «Код».</p>');return}
+  var g=document.createElement("div");g.className="gal";v.appendChild(g);
+  S.arts.slice().reverse().forEach(function(a){var n=fnode(a.nid),d=document.createElement("div");d.className="ac2";
+    d.innerHTML='<div class="pv"></div><b></b><small></small><div class="acts"><button>Відкрити</button><button class="d" aria-label="Меню">'+ico("dots")+'</button></div>';
+    var pv=d.children[0],ext=n&&n.t!=="d"?(a.name.split(".").pop()||"").toUpperCase().slice(0,5):"ПАПКА";pv.innerHTML=ico(n&&n.t==="d"?"fold":"file");
+    if(n&&n.t==="f"&&/\.(html?|svg)$/i.test(n.name)){(function(pv,n){var io=new IntersectionObserver(function(en){if(!en[0].isIntersecting)return;io.disconnect();getText(n).then(function(t){if(!t)return;var f=document.createElement("iframe");f.setAttribute("sandbox","");f.setAttribute("tabindex","-1");f.setAttribute("aria-hidden","true");f.srcdoc=/\.svg$/i.test(n.name)?'<body style="margin:0;display:grid;place-items:center;height:100vh"><div style="width:80%;height:80%">'+t.replace(/<svg/i,'<svg width="100%" height="100%"')+'</div>':t;pv.innerHTML="";pv.appendChild(f)}).catch(function(){})});io.observe(pv)})(pv,n)}
+    d.children[1].textContent=a.name;d.children[2].textContent=ext+" · "+dd(a.created);
+    var bs=d.querySelectorAll("button");bs[0].onclick=function(){runArtNode(a)};
+    bs[1].onclick=function(){sheet(a.name,[["edit","Перейменувати",function(){var t=prompt("Назва",a.name);if(t&&t.trim()){a.name=t.trim();save();renderArt()}}],["shr","Зберегти (експорт)",function(){if(n)exportNode(n)}],["edit","Змінити в чаті",function(){if(!n)return;tab("chat");var i=$("#inp");i.value="@"+pathOf(n)+" ";i.focus()}],["code","Показати в Коді",function(){if(!n)return;CS=n.proj||"";CF=n.t==="d"?n.id:(n.par||null);tab("code")}],["del","Видалити з галереї",function(){S.arts=S.arts.filter(function(x){return x!==a});save();renderArt()}]])};
+    g.appendChild(d)})}
+
+// ===== Етап 3: розумний ланцюжок коду =====
+var STOP=false,JR=0,LASTJ=0,MN={auto:"Авто",fast:"Швидкий",reliable:"Надійний",master:"Майстер"};
+var WSYS="Ти досвідчений програміст. Дотримуйся формату змін: <<<FILE шлях>>>...<<<END>>> для нових файлів і <<<EDIT шлях>>> з <<<<<<< SEARCH / ======= / >>>>>>> REPLACE для змін. Поясню не пиши.";
+var RSYS="Ти код-ревʼюер. Отримуєш вимоги й код. Відповідай ЛИШЕ правками <<<EDIT шлях>>> з блоками <<<<<<< SEARCH (точний фрагмент із коду) / ======= / >>>>>>> REPLACE і <<<END>>> або одним словом OK, якщо проблем немає. Нічого не переписуй повністю.";
+function isCodeReq(t,fl){return /(код|\bгр[ауи]\b|сайт|скрипт|файл|html|css|\bjs\b|python|функці|програм|застосунок|додаток|калькулятор|сторінк|баг|помилк)/i.test(t)||(/@[^\s]+/.test(t)&&fl&&fl.length>0)}
+function autoMode(t){if(/(кілька файл|багатофайл|велик|повноцінн|проєкт з|crm|месенджер|редактор)/i.test(t)||t.length>900)return "master";if(/(\bгр[ауи]\b|сайт|сторінк|застосунок|додаток|калькулятор|лендінг)/i.test(t))return "reliable";return "fast"}
+function forecast(m){return m==="fast"?"1–2":m==="reliable"?"до 5":"до 14"}
+function stat(t,show){var e=$("#stat");e.style.display=show===false?"none":"flex";if(show!==false){$("#statT").textContent=t;$("#statX").textContent="Стоп"}}
+$("#statX").onclick=function(){if(busy){stopAll();$("#statT").textContent="Зупиняю…";return}
+  var j=S.job;if(!j)return;var c=S.chats.filter(function(x){return x.id===j.chat})[0];if(!c){S.job=null;save();stat("",false);return}
+  S.cur=c.id;if(c.msgs.length&&c.msgs[c.msgs.length-1].r==="u")c.msgs.pop();S.job=null;save();stat("",false);tab("chat");renderAll();send(j.text,true)};
+function chk(){if(STOP)throw "stop"}
+function codeModels(){return orderIdx().filter(function(i){return isCode(i)&&hasKey(i)&&S.set.dis.indexOf(MODELS[i].id)<0})}
+async function ask(cands,hist,prompt,sys,label){var ok=cands.filter(function(i){return usable(i,false)});
+  for(var z=0;z<ok.length;z++){chk();var i=ok[z],m=MODELS[i];stat(label+" · "+m.n+" · запитів "+JR);
+    try{JR++;var r=await call(m,hist,prompt,[],sys),u=U(i);u.req++;u.tok+=r.tok;u.n=0;u.until=0;r.j=i;LASTJ=i;return r}
+    catch(e){var w=U(i);if(e.status===404||e.status===400||e.status===401||e.status===403||(e.status===429&&/per ?day|daily/i.test(e.msg||"")))w.off=true;else if(e.status===429){w.n=(w.n||0)+1;w.until=Date.now()+60000*Math.min(w.n,30)}}}
+  throw "nomodel"}
+function trunc(t){return (t.split("```").length-1)%2===1||(t.match(/<<<(FILE|EDIT)\b/g)||[]).length>(t.match(/<<<END>>>/g)||[]).length||(/<html/i.test(t)&&!/<\/html>/i.test(t))}
+function glue(a,b){for(var k=Math.min(300,a.length,b.length);k>=20;k--){if(a.slice(-k)===b.slice(0,k))return a+b.slice(k)}return a+(b.charAt(0)==="\n"||a.slice(-1)==="\n"?"":"\n")+b}
+async function gen(cands,hist,prompt,sys,label){var r=await ask(cands,hist,prompt,sys,label),t=r.text,cut=r.cut,n=0;
+  while((cut||trunc(t))&&n<4){chk();n++;var o=n%cands.length,ord=cands.slice(o).concat(cands.slice(0,o)),tail=t.split("\n").slice(-40).join("\n");
+    var r2=await ask(ord,[],"Відповідь обірвалась. Ось її кінець:\n"+tail+"\n\nПродовж із цього місця, не повторюй уже написане, той самий формат.",sys,label+" · дописування "+n);
+    if(!r2.text.trim())break;t=glue(t,r2.text);cut=r2.cut}
+  return {text:t,j:r.j}}
+async function mergeOps(F,pr,text){var P=parseOps(text);
+  for(var i=0;i<P.ops.length;i++){var o=P.ops[i],f=F[o.p];
+    if(o.k==="f"){F[o.p]={text:o.b,full:true,edits:[],isNew:f?f.isNew:!fsFind(pr,o.p)};continue}
+    if(!f){var n=fsFind(pr,o.p);if(!n||n.bin)continue;f=F[o.p]={text:await getText(n),full:false,edits:[],isNew:false}}
+    o.ed.forEach(function(e){var r=applyEd(f.text,e);if(r!==null){f.text=r;if(!f.full)f.edits.push(e)}})}
+  return P.rest}
+function outOps(F,rest){var s=(rest||"").trim();for(var p in F){var f=F[p];
+  if(f.full)s+="\n<<<FILE "+p+">>>\n"+f.text+"\n<<<END>>>";
+  else if(f.edits.length)s+="\n<<<EDIT "+p+">>>\n"+f.edits.map(function(e){return "<<<<<<< SEARCH\n"+e[0]+"\n=======\n"+e[1]+"\n>>>>>>> REPLACE"}).join("\n")+"\n<<<END>>>"}return s}
+function dump(F){var o="",n=0;for(var p in F){var x="["+p+"]\n"+F[p].text+"\n\n";if(n+x.length>30000){o+="["+p+"] (скорочено)\n"+F[p].text.slice(0,2000)+"\n\n";continue}n+=x.length;o+=x}return o}
+// безкоштовні перевірки
+function jsErr(c){try{new Function(c)}catch(e){return e.message}return null}
+function tagBal(h){var st=[],re=/<(\/?)([a-z][a-z0-9]*)\b[^>]*?(\/?)>/gi,x,V=/^(area|base|br|col|embed|hr|img|input|link|meta|source|track|wbr|p|li|td|tr|th|option|dt|dd)$/i;
+  h=h.replace(/<script[\s\S]*?<\/script>/gi,"<script><\/script>").replace(/<style[\s\S]*?<\/style>/gi,"<style><\/style>").replace(/<!--[\s\S]*?-->/g,"");
+  while(x=re.exec(h)){var tg=x[2].toLowerCase();if(V.test(tg)||x[3])continue;if(x[1]){if(st.pop()!==tg)return "незбалансований тег </"+tg+">"}else st.push(tg)}return st.length?"не закрито <"+st.pop()+">":null}
+async function inlineDoc(F,pr,main){var t=F[main].text,dir=main.indexOf("/")>=0?main.slice(0,main.lastIndexOf("/")+1):"";
+  async function get(h){var p=(dir+h).replace(/^\.\//,"");if(F[p])return F[p].text;var n=fsFind(pr,p);return n&&!n.bin?await getText(n):null}
+  var css=/<link[^>]*href=["']([^"']+\.css)["'][^>]*>/gi,js=/<script[^>]*src=["']([^"']+\.js)["'][^>]*>\s*<\/script>/gi,M={},jobs=[];
+  t.replace(css,function(a,h){jobs.push(h);return a});t.replace(js,function(a,h){jobs.push(h);return a});
+  for(var i=0;i<jobs.length;i++){var x=await get(jobs[i]);if(x!==null)M[jobs[i]]=x}
+  return t.replace(css,function(a,h){return M[h]!==undefined?"<style>"+M[h]+"</style>":a}).replace(js,function(a,h){return M[h]!==undefined?"<scr"+"ipt>"+M[h].replace(/<\/script/gi,"<\\/script")+"</scr"+"ipt>":a})}
+function hidden(doc){return new Promise(function(res){var f=document.createElement("iframe");f.setAttribute("sandbox","allow-scripts");f.style.cssText="position:fixed;width:1px;height:1px;left:-9px;opacity:0;pointer-events:none";var errs=[];
+  function on(e){if(e.source===f.contentWindow&&e.data&&e.data.yc)errs.push(e.data.t)}window.addEventListener("message",on);
+  f.srcdoc=/<head[^>]*>/i.test(doc)?doc.replace(/<head[^>]*>/i,function(x){return x+HOOK}):HOOK+doc;document.body.appendChild(f);
+  setTimeout(function(){window.removeEventListener("message",on);f.remove();res(errs.slice(0,5))},3000)})}
+async function checkF(F,pr){var errs=[],htmls=[];
+  for(var p in F){var f=F[p],ext=(p.split(".").pop()||"").toLowerCase();
+    if(ext==="js"){var e=jsErr(f.text);if(e)errs.push(p+": "+e)}
+    else if(/^html?$/.test(ext)){var b=tagBal(f.text);if(b)errs.push(p+": "+b);var re=/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/gi,x;while(x=re.exec(f.text)){var e2=jsErr(x[1]);if(e2)errs.push(p+" (скрипт): "+e2)}htmls.push(p)}
+    else if(ext==="json"){try{JSON.parse(f.text)}catch(e3){errs.push(p+": "+e3.message)}}}
+  if(!errs.length&&htmls.length){var main=htmls.filter(function(h){return /index/i.test(h)})[0]||htmls[0];(await hidden(await inlineDoc(F,pr,main))).forEach(function(x){errs.push(main+" (запуск): "+x)})}
+  return errs}
+async function plan(cands,t,hist){var r=await ask(cands,hist,"Склади план для задачі. Відповідай лише рядками формату:\nФАЙЛ шлях | призначення\nі в кінці рядок КОНТРАКТ: імена спільних функцій, даних, id елементів, залежності.\nНе більше 6 файлів, кожен до ~300 рядків. Задача: "+t,"Ти архітектор програм. Відповідай стисло.","План"),files=[];
+  r.text.split("\n").forEach(function(l){var m=l.match(/^\s*(?:[-*]\s*)?ФАЙЛ\s+([^\s|]+)\s*\|\s*(.*)/i);if(m)files.push({p:m[1].replace(/^[\/.]+/,""),d:m[2]})});return {files:files.slice(0,6),man:r.text}}
+async function codeChain(c,t,extra,hist){
+  var pr=c.projectId||"",best=codeModels();if(!best.length)return null;
+  var mode=S.mode==="auto"?autoMode(t):S.mode;
+  if(mode!=="fast"&&!confirm("Режим «"+MN[mode]+"»: прогноз "+forecast(mode)+" запитів"+(mode==="master"?" (багато ліміту!)":"")+". Продовжити?"))return {text:"Скасовано користувачем.",j:S.model,tok:0};
+  STOP=false;JR=0;S.job={chat:c.id,text:t,mode:mode};save();stat("Старт · "+MN[mode]);
+  try{
+    var F={},rest="",wr;
+    if(mode==="master"){var pl=await plan(best,t+extra,hist);
+      if(pl.files.length>1){F["MANIFEST.md"]={text:pl.man,full:true,edits:[],isNew:!fsFind(pr,"MANIFEST.md")};
+        for(var i=0;i<pl.files.length;i++){var fi=pl.files[i],nb=Object.keys(F).filter(function(k){return k!=="MANIFEST.md"}).map(function(k){return "["+k+"]\n"+F[k].text.slice(0,4000)}).join("\n\n");
+          var gg=await gen(best,[],"Маніфест:\n"+pl.man+"\n\nНапиши файл "+fi.p+" ("+fi.d+"). Завдання: "+t+extra+"\nВже створені файли:\n"+(nb||"(немає)")+"\nВідповідай лише блоком <<<FILE "+fi.p+">>> ... <<<END>>>.",CURSYS,"Файл "+(i+1)+"/"+pl.files.length);wr=gg.j;await mergeOps(F,pr,gg.text)}}}
+    if(Object.keys(F).length<2){F={};var g=await gen(best,hist,t+extra,CURSYS,"Генерація");wr=g.j;rest=await mergeOps(F,pr,g.text);if(!Object.keys(F).length){S.job=null;save();return {text:g.text,j:g.j,tok:0}}}
+    S.job.stage="gen";save();
+    var revs=best.filter(function(i){return i!==wr}).sort(function(a,b){return left(b)-left(a)});if(!revs.length)revs=[wr];
+    var nrev=mode==="fast"?0:mode==="reliable"?1:2;
+    for(var r=0;r<nrev;r++){chk();var rv=await ask([revs[r%revs.length]].concat(best),[],"Вимоги користувача:\n"+t+"\n\nКод:\n"+dump(F),RSYS,"Перевірка "+(r+1)+"/"+nrev);if(!/^\s*OK\b/i.test(rv.text))await mergeOps(F,pr,rv.text)}
+    if(mode==="master"){chk();var fv=await ask([revs[2%revs.length]].concat(best),[],"Фінальне вичитування: чи виконано прохання повністю, чи всі файли узгоджені (підключення, імена функцій, id).\nВимоги:\n"+t+"\n\nКод:\n"+dump(F),RSYS,"Вичитування");if(!/^\s*OK\b/i.test(fv.text))await mergeOps(F,pr,fv.text)}
+    stat("Перевірка запуском · запитів "+JR);var cyc=mode==="fast"?0:mode==="reliable"?2:3,errs=await checkF(F,pr);
+    for(var k=0;k<cyc&&errs.length;k++){chk();var fx=await ask([wr].concat(best),[],"Під час перевірки знайдено помилки:\n"+errs.join("\n")+"\n\nКод:\n"+dump(F)+"\n\nВиправ лише правками EDIT (SEARCH — точний фрагмент).",WSYS,"Виправлення "+(k+1)+"/"+cyc);await mergeOps(F,pr,fx.text);errs=await checkF(F,pr)}
+    var out=outOps(F,rest);if(errs.length)out+="\n\nПеревірка запуском: "+errs.join("; ");
+    S.job=null;save();return {text:out,j:LASTJ,tok:0}
+  }catch(e){
+    if(e==="stop"){S.job=null;save();return {text:"⏹ Зупинено. Нічого не змінено.",j:LASTJ||S.model,tok:0}}
+    return null}}
+function pickMode(){sheet("Режим коду",[["bolt","Авто: за складністю запиту",function(){setMode("auto")}],["bolt","Швидкий: одна модель + безкоштовна перевірка",function(){setMode("fast")}],["ok","Надійний: ревʼюер + до 2 виправлень",function(){setMode("reliable")}],["gauge","Майстер: план, файли, 2 перевірки, вичитування",function(){setMode("master")}]])}
+function setMode(m){S.mode=m;save();$("#modeB").textContent=MN[m]}
+$("#modeB").onclick=pickMode;
+
+init();loadKeys();applyPrefs();pwaInit();$("#modeB").textContent=MN[S.mode]||"Авто";if(S.job){stat("Незавершене завдання: «"+S.job.text.slice(0,40)+"»");$("#statX").textContent="Повторити"}try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}setTheme(ld("l2theme")||"dark");setAcc(ld("l2acc")||ACC[0]);renderAll();
+if(!Object.keys(K).length)showKeys();
+</script>
+</body>
+</html>
